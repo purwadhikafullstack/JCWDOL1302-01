@@ -10,7 +10,7 @@ import {
   useColorModeValue as mode,
 } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
-import { CartItem } from './CartItem';
+import { CartItem } from './CartItems';
 import { CartSummary } from './CartSummary';
 import { deleteCartItem, getCartByUserID } from '@/services/cart.service';
 import { useAppDispatch, useAppSelector } from '@/lib/hooks';
