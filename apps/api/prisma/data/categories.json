@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Sayur",
+    "slug": "sayur",
+    "image": "sayur.jpeg"
+  },
+  {
+    "name": "Buah",
+    "slug": "buah",
+    "image": "buah.jpeg"
+  },
+  {
+    "name": "Protein",
+    "slug": "protein",
+    "image": "protein.jpeg"
+  },
+  {
+    "name": "Siap Saji",
+    "slug": "siap-saji",
+    "image": "siap-saji.jpeg"
+  },
+  {
+    "name": "Makanan Ringan",
+    "slug": "makanan-ringan",
+    "image": "makanan-ringan.jpeg"
+  },
+  {
+    "name": "Ibu dan Bayi",
+    "slug": "ibu-dan-bayi",
+    "image": "ibu-dan-bayi.jpeg"
+  },
+  {
+    "name": "Bumbu",
+    "slug": "bumbu",
+    "image": "bumbu.jpeg"
+  },
+  {
+    "name": "Beras",
+    "slug": "beras",
+    "image": "beras.jpeg"
+  },
+  {
+    "name": "Peralatan Dapur",
+    "slug": "peralatan-dapur",
+    "image": "peralatan-dapur.jpeg"
+  },
+  {
+    "name": "Perawatan Rumah",
+    "slug": "perawatan-rumah",
+    "image": "perawatan-rumah.jpeg"
+  }
+]

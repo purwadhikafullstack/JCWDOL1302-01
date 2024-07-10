@@ -1,0 +1,182 @@
+[
+  {
+    "name": "Sayur Bayam",
+    "slug": "sayur-bayam",
+    "description": "Bayam Sehat dari perkebunan sendiri",
+    "price": 7000,
+    "isActive": true,
+    "categorySlug": "sayur",
+    "images": ["bayam1.jpeg", "bayam2.jpeg"]
+  },
+  {
+    "name": "Sayur Kangkung",
+    "slug": "sayur-kangkung",
+    "description": "Kangkung Hijau segar dari perkebunan sendiri",
+    "price": 6000,
+    "isActive": true,
+    "categorySlug": "sayur",
+    "images": ["kangkung1.jpg", "kangkung2.jpg"]
+  },
+  {
+    "name": "Buah Jeruk California",
+    "slug": "jeruk-california",
+    "description": "Jeruk import dari California AS",
+    "price": 7000,
+    "isActive": true,
+    "categorySlug": "buah",
+    "images": ["jeruk1.jpeg", "jeruk2.jpeg"]
+  },
+  {
+    "name": "Buah Apel Malang",
+    "slug": "apel-malang",
+    "description": "Buah Apel merah dari Malang",
+    "price": 14000,
+    "isActive": true,
+    "categorySlug": "buah",
+    "images": ["apel1.jpeg", "apel2.jpeg"]
+  },
+  {
+    "name": "Daging Sapi",
+    "slug": "daging-sapi",
+    "description": "Dagin Sapi kaya protein dari New Zealand",
+    "price": 55000,
+    "isActive": true,
+    "categorySlug": "protein",
+    "images": ["dagingsapi1.jpeg", "dagingsapi2.jpeg"]
+  },
+  {
+    "name": "Daging Ayam",
+    "slug": "daging-ayam",
+    "description": "Daging Ayam pilihan dari peternakan lokal",
+    "price": 24000,
+    "isActive": true,
+    "categorySlug": "protein",
+    "images": ["ayam1.jpeg", "ayam2.jpeg"]
+  },
+  {
+    "name": "Mac n Cheese",
+    "slug": "mac-and-cheese",
+    "description": "Macaroni keju siap saji",
+    "price": 14000,
+    "isActive": true,
+    "categorySlug": "siap-saji",
+    "images": ["mnc1.jpeg", "mnc2.jpeg"]
+  },
+  {
+    "name": "Nasi Goreng Spesial",
+    "slug": "nasi-goreng",
+    "description": "Nasi goreng spesial siap saji",
+    "price": 20000,
+    "isActive": true,
+    "categorySlug": "siap-saji",
+    "images": ["nasgor1.jpeg", "nasgor2.jpeg"]
+  },
+  {
+    "name": "Chitatoz",
+    "slug": "snack-chitatoz",
+    "description": "Makanan ringan dari kentang 100% asli",
+    "price": 9000,
+    "isActive": true,
+    "categorySlug": "makanan-ringan",
+    "images": ["chitatoz1.jpeg", "chitatoz2.jpeg"]
+  },
+  {
+    "name": "Basreng Pedas",
+    "slug": "basreng-pedas",
+    "description": "Basreng pedas asli dari Bandung",
+    "price": 9000,
+    "isActive": true,
+    "categorySlug": "makanan-ringan",
+    "images": ["basreng1.jpg", "basreng2.jpg"]
+  },
+  {
+    "name": "Susu Formula",
+    "slug": "susu-formula",
+    "description": "Susu Formula untuk bayi import dari Finlandia",
+    "price": 89000,
+    "isActive": true,
+    "categorySlug": "ibu-dan-bayi",
+    "images": ["susu1.jpeg", "susu2.jpeg"]
+  },
+  {
+    "name": "Dot Bayi",
+    "slug": "dot-bayi",
+    "description": "Dot Bayi dari plastik anti BPA",
+    "price": 45000,
+    "isActive": true,
+    "categorySlug": "ibu-dan-bayi",
+    "images": ["dot1.jpeg", "dot2.jpeg"]
+  },
+  {
+    "name": "Bumbu racik sayur kangkung",
+    "slug": "bumbu-racik-kangkung",
+    "description": "Bumbu racik tumis kangkung",
+    "price": 4000,
+    "isActive": true,
+    "categorySlug": "bumbu",
+    "images": ["bumbu1.jpeg", "bumbu2.jpeg"]
+  },
+  {
+    "name": "Bumbu racik nasi goreng",
+    "slug": "bumbu-racik-nasi-goreng",
+    "description": "Bumbu racik nasi goreng ala Singapur",
+    "price": 7000,
+    "isActive": true,
+    "categorySlug": "bumbu",
+    "images": ["bumbu3.jpeg", "bumbu4.jpeg"]
+  },
+  {
+    "name": "Beras Pulen Petruk",
+    "slug": "beras-pulen-petruk",
+    "description": "Beras pulen Petruk asli dari Jawa Tengah",
+    "price": 73000,
+    "isActive": true,
+    "categorySlug": "beras",
+    "images": ["beras1.jpeg", "beras2.jpeg"]
+  },
+  {
+    "name": "Beras Pera Mandalawangi",
+    "slug": "beras-pera-mandalawangi",
+    "description": "Beras Pera asli Jawa Barat",
+    "price": 65000,
+    "isActive": true,
+    "categorySlug": "beras",
+    "images": ["beras3.jpeg", "beras4.jpeg"]
+  },
+  {
+    "name": "Cairan Pembersih Dapur",
+    "slug": "cairan-pembersih-dapur",
+    "description": "Cairan pembersih alat dapur",
+    "price": 7000,
+    "isActive": true,
+    "categorySlug": "peralatan-dapur",
+    "images": ["dapur1.jpeg", "dapur2.jpeg"]
+  },
+  {
+    "name": "Sabun Cuci Piring",
+    "slug": "sabun-cuci-piring",
+    "description": "Sabun cuci untuk alat makan",
+    "price": 4000,
+    "isActive": true,
+    "categorySlug": "peralatan-dapur",
+    "images": ["sabun1.jpeg", "sabun2.jpeg"]
+  },
+  {
+    "name": "Lem anti Tikus",
+    "slug": "lem-tikus",
+    "description": "Lem anti Tikus untuk perangkap tikus",
+    "price": 12000,
+    "isActive": true,
+    "categorySlug": "perawatan-rumah",
+    "images": ["tikus1.png", "tikus2.png"]
+  },
+  {
+    "name": "Semprotan Anti Rayap",
+    "slug": "semprotan-anti-rayap",
+    "description": "Semprotan anti Rayap untuk perabotan kayu dirumah anda",
+    "price": 39000,
+    "isActive": true,
+    "categorySlug": "perawatan-rumah",
+    "images": ["rayap1.jpg", "rayap2.jpg"]
+  }
+]
