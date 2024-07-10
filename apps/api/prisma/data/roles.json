@@ -1,0 +1,11 @@
+[
+  {
+    "name": "super_admin"
+  },
+  {
+    "name": "store_admin"
+  },
+  {
+    "name": "customer"
+  }
+]
