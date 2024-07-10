@@ -1,0 +1,1 @@
+export const MAX_STORE_DISTANCE_IN_KM: number = 10;
