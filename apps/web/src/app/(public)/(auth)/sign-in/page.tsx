@@ -2,9 +2,10 @@ import React from 'react';
 import LoginView from '@/components/signIn/SignIn';
 import { authErrorMessages } from "@/config/auth";
 
-type Props = { searchParams: { callbackUrl?: string, error?: string } };
+// type Props = { searchParams: { callbackUrl?: string, error?: string } };
 
-const Page = ({ searchParams }: Props) => {
+const Page = () => {
+  const searchParams = { callbackUrl: '/', error: null };
   const { callbackUrl = '/', error } = searchParams;
   const authError = error ? authErrorMessages[error] || authErrorMessages.default : null
 
