@@ -7,6 +7,7 @@ import path from 'path';
 import fs from 'fs';
 import { sign } from 'jsonwebtoken';
 import { API_KEY } from '@/config';
+import crypto from 'crypto';
 
 const prisma = new PrismaClient();
 

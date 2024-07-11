@@ -22,10 +22,10 @@ interface IPaymentMethod {
 }
 
 const ewallets: IPaymentMethod[] = [
-  {
-    value: 'GOPAY',
-    image: 'https://shop.rehan.id/assets/images/payment-methods/gopay.png',
-  },
+  // {
+  //   value: 'GOPAY',
+  //   image: 'https://shop.rehan.id/assets/images/payment-methods/gopay.png',
+  // },
   {
     value: 'OVO',
     image: 'https://shop.rehan.id/assets/images/payment-methods/ovo.png',
