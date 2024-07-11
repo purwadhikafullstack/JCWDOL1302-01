@@ -5,8 +5,8 @@
   "main": "src/app.ts",
   "scripts": {
     "dev": "cross-env NODE_ENV=development ts-node-dev -r tsconfig-paths/register src/app.ts",
-    "build": "tsc",
-    "serve": "cross-env NODE_ENV=production node dist/index.js",
+    "build": "tsc && tsc-alias",
+    "serve": "cross-env NODE_ENV=production node dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prisma": "npx prisma",
     "migrate": "npx prisma migrate dev",
