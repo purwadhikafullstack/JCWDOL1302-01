@@ -4,6 +4,7 @@ import {
   createProductImageController,
   deleteProductController,
   deleteProductImageController,
+  getAvailableProductsByStoreIDController,
   getProductByIDController,
   getProductBySlugController,
   getProductsController,
@@ -15,6 +16,7 @@ import { uploader } from '@/helpers/multer';
 const router = express.Router();
 
 router.get('/', getProductsController);
+router.get('/store', getAvailableProductsByStoreIDController);
 router.get('/:id', getProductByIDController);
 router.get('/slug/:slug', getProductBySlugController);
 router.post('/', verifyToken, superAdminGuard, createProductController);
@@ -24,7 +26,9 @@ router.post(
   '/image',
   verifyToken,
   superAdminGuard,
-  uploader('IMG_', '/products').single('image'),
+  uploader('IMG_', '/products', ['.jpg', '.jpeg', '.png', '.gif']).single(
+    'image',
+  ),
   createProductImageController,
 );
 router.delete(

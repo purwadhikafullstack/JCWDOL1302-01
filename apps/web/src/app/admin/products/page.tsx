@@ -27,6 +27,7 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { FormatCurrency } from '@/utils/FormatCurrency';
 import { useAppSelector } from '@/lib/hooks';
 import { toast } from 'react-toastify';
+import { AddIcon } from "@chakra-ui/icons";
 
 const Page = () => {
   const [data, setData] = useState({
@@ -84,7 +85,9 @@ const Page = () => {
                 onClick={() => {
                   router.push(`/admin/products/create`);
                 }}
+                alignItems="center"
               >
+                <AddIcon fontSize="0.75rem" mr={1.5} />
                 Add
               </Button>
             )}

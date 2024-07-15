@@ -1,4 +1,5 @@
 'use client';
+
 import { useAppSelector, useAppDispatch } from '@/lib/hooks';
 import {
   FlexProps,
@@ -20,11 +21,7 @@ import {
   Badge,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { IconType } from 'react-icons';
-import { FaPager, FaAddressBook, FaAtlas, FaTicketAlt } from 'react-icons/fa';
 import {
-  FiHome,
-  FiUser,
   FiMenu,
   FiChevronDown,
   FiShoppingCart,
@@ -37,43 +34,8 @@ interface MobileProps extends FlexProps {
   onOpen: () => void;
 }
 
-interface LinkItemProps {
-  name: string;
-  icon: IconType;
-  href: string;
-  key: string;
-}
-const LinkItems: Array<LinkItemProps> = [
-  { name: 'Home', icon: FiHome, href: '/users', key: 'Home' },
-  { name: 'Profile', icon: FiUser, href: '/users/profile', key: 'Profile' },
-  {
-    name: 'Change Password',
-    icon: FaPager,
-    href: '/users/change-password',
-    key: 'Change Password',
-  },
-  {
-    name: 'Address',
-    icon: FaAddressBook,
-    href: '/users/address',
-    key: 'Address',
-  },
-  {
-    name: 'Orders',
-    icon: FaAtlas,
-    href: '/users/orders',
-    key: 'Orders',
-  },
-  {
-    name: 'Vouchers',
-    icon: FaTicketAlt,
-    href: '/users/vouchers',
-    key: 'Vouchers',
-  },
-];
-
 const MobileNavUser = ({ onOpen, ...rest }: MobileProps) => {
-  const { status, user } = useAppSelector((state) => state.auth);
+  const { user } = useAppSelector((state) => state.auth);
   const router = useRouter();
   const dispatch = useAppDispatch();
   const cart = useAppSelector((state) => state.cart);

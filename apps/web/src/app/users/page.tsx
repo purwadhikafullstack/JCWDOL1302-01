@@ -1,4 +1,4 @@
-import { Button, Flex, Stack, Text, Image } from '@chakra-ui/react';
+import { Flex, Text, Image } from '@chakra-ui/react';
 import Link from 'next/link';
 import React from 'react';
 

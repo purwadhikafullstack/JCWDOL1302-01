@@ -8,9 +8,10 @@ import {
   createDiscountQuery,
   getDiscountByIDQuery,
   getDiscountByProductIdAndStoreIdQuery,
-  getDiscountQuery,
+  getDiscountsQuery,
   getDiscountsByStoreIDQuery,
   updateDiscountQuery,
+  deleteDiscountQuery,
 } from '@/queries/discount.query';
 import { Discount } from '@prisma/client';
 
@@ -25,11 +26,11 @@ const createDiscountAction = async (
   }
 };
 
-const getDiscountAction = async (
+const getDiscountsAction = async (
   filters: IFilterDiscount,
 ): Promise<IResultDiscount> => {
   try {
-    const data = await getDiscountQuery(filters);
+    const data = await getDiscountsQuery(filters);
     return data;
   } catch (err) {
     throw err;
@@ -62,11 +63,18 @@ const getDiscountByIDAction = async (id: string): Promise<Discount | null> => {
   }
 };
 
-const getDiscountByProductIdAndStoreIdAction = async (productId: string, storeId: string): Promise<Discount | null> => {
+const getDiscountByProductIdAndStoreIdAction = async (
+  productId: string,
+  storeId: string,
+): Promise<Discount | null> => {
   try {
-    if (!productId || !storeId) throw new Error("Please fill product ID and store ID");
+    if (!productId || !storeId)
+      throw new Error('Please fill product ID and store ID');
 
-    const discount = await getDiscountByProductIdAndStoreIdQuery(productId, storeId);
+    const discount = await getDiscountByProductIdAndStoreIdQuery(
+      productId,
+      storeId,
+    );
     if (!discount) throw new HttpException(404, 'Data not found');
 
     return discount;
@@ -87,11 +95,21 @@ const updateDiscountAction = async (
   }
 };
 
+const deleteDiscountAction = async (id: string): Promise<Discount> => {
+  try {
+    const discount = await deleteDiscountQuery(id);
+    return discount;
+  } catch (err) {
+    throw err;
+  }
+};
+
 export {
+  deleteDiscountAction,
   updateDiscountAction,
   getDiscountByIDAction,
   createDiscountAction,
-  getDiscountAction,
+  getDiscountsAction,
   getDiscountsByStoreIDAction,
   getDiscountByProductIdAndStoreIdAction,
 };

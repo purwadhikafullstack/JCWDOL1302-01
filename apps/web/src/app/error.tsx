@@ -1,6 +1,5 @@
 'use client';
 
-import Head from 'next/head';
 import {
   Box,
   Heading,
@@ -8,12 +7,9 @@ import {
   Text,
   Button,
   Stack,
-  Icon,
   useColorModeValue,
-  createIcon,
   Image,
   Flex,
-  Center,
   Link,
   chakra,
 } from '@chakra-ui/react';

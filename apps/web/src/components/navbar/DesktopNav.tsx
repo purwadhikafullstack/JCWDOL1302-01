@@ -7,26 +7,9 @@ import {
   useColorModeValue,
   Text,
 } from '@chakra-ui/react';
-import { NavItem } from './Navbar';
 import DesktopSubNav from './DesktopSubNav';
 import Link from 'next/link';
-
-export const NAV_ITEMS: Array<NavItem> = [
-  {
-    label: 'Products',
-    children: [
-      {
-        label: 'Explore Product',
-        subLabel: 'Grocery for you',
-        href: '/products?category',
-      },
-    ],
-  },
-  {
-    label: 'About us',
-    href: '/about-us',
-  },
-];
+import { NAV_ITEMS } from "@/constants/navbar.constant";
 
 const DesktopNav = () => {
   const linkColor = useColorModeValue('gray.600', 'gray.200');

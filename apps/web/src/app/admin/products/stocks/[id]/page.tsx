@@ -22,14 +22,11 @@ import {
   Select,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import {
-  addStock,
-  getStocks,
-  getStocksByProductID,
-} from '@/services/stock.service';
+import { getStocks } from '@/services/stock.service';
 import { getProductByID } from '@/services/product.service';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useAppSelector } from '@/lib/hooks';
+import { AddIcon } from "@chakra-ui/icons";
 
 type Props = { params: { id: string } };
 
@@ -89,7 +86,9 @@ const Page = ({ params: { id } }: Props) => {
                 onClick={() => {
                   router.push(`/admin/products/stocks/${id}/create`);
                 }}
+                alignItems="center"
               >
+                <AddIcon fontSize="0.75rem" mr={1.5} />
                 Add
               </Button>
             )}

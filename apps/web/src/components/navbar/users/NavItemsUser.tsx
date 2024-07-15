@@ -2,8 +2,6 @@ import { FlexProps, Flex, Icon } from '@chakra-ui/react';
 import Link from 'next/link';
 import { ReactText } from 'react';
 import { IconType } from 'react-icons';
-import { FaPager, FaAddressBook, FaAtlas, FaTicketAlt } from 'react-icons/fa';
-import { FiHome, FiUser } from 'react-icons/fi';
 
 interface NavItemProps extends FlexProps {
   icon: IconType;
@@ -11,41 +9,6 @@ interface NavItemProps extends FlexProps {
   children: ReactText;
   onClose: () => void;
 }
-
-interface LinkItemProps {
-  name: string;
-  icon: IconType;
-  href: string;
-  key: string;
-}
-const LinkItems: Array<LinkItemProps> = [
-  { name: 'Home', icon: FiHome, href: '/users', key: 'Home' },
-  { name: 'Profile', icon: FiUser, href: '/users/profile', key: 'Profile' },
-  {
-    name: 'Change Password',
-    icon: FaPager,
-    href: '/users/change-password',
-    key: 'Change Password',
-  },
-  {
-    name: 'Address',
-    icon: FaAddressBook,
-    href: '/users/address',
-    key: 'Address',
-  },
-  {
-    name: 'Orders',
-    icon: FaAtlas,
-    href: '/users/orders',
-    key: 'Orders',
-  },
-  {
-    name: 'Vouchers',
-    icon: FaTicketAlt,
-    href: '/users/vouchers',
-    key: 'Vouchers',
-  },
-];
 
 const NavItemUser = ({
   icon,

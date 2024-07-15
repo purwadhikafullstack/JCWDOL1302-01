@@ -22,7 +22,9 @@ router.patch('/:id/password', verifyToken, updatePasswordController);
 router.patch(
   '/:id/avatar',
   verifyToken,
-  uploader('AVATAR_', '/avatar').single('image'),
+  uploader('AVATAR_', '/avatar', ['.jpg', '.jpeg', '.png', '.gif']).single(
+    'image',
+  ),
   updateAvatarController,
 );
 router.delete('/:id', verifyToken, adminGuard, deleteUserController);

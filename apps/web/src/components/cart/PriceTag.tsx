@@ -2,12 +2,9 @@ import { FormatCurrency } from '@/utils/FormatCurrency';
 import {
   Badge,
   Flex,
-  HStack,
   Text,
-  TextProps,
   useColorModeValue as mode,
 } from '@chakra-ui/react';
-import { ReactNode } from 'react';
 
 interface PriceTagProps {
   price: number;

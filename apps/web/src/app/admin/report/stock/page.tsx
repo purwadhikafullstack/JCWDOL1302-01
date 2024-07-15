@@ -1,6 +1,7 @@
-import StockReport from '@/components/sales/chart/StockReport';
+'use client';
+
+import StockReport from '@/components/report/StockReport';
 import { Box, Card, CardBody, Text } from '@chakra-ui/react';
-import React from 'react';
 
 const page = () => {
   return (

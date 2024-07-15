@@ -90,7 +90,7 @@ export const authSlice = createSlice({
 export const signIn = (params: IUsers) => async (dispatch: Dispatch) => {
   try {
     const { email, password } = params;
-    const location = JSON.parse(localStorage.getItem('location') || '');
+    const location = JSON.parse(localStorage.getItem('location') || '{}');
     const { data } = await instance.post('/auth/login', {
       email,
       password,
@@ -123,8 +123,9 @@ export const signIn = (params: IUsers) => async (dispatch: Dispatch) => {
 
     dispatch(
       updateCartItemsState({
-        itemsCount: cart?.cartItems?.length as number,
-        itemsPrice: cart?.itemsPrice as number,
+        itemsCount: Number(cart?.cartItems?.length),
+        itemsPrice: Number(cart?.itemsPrice),
+        itemsDiscount: Number(cart?.itemsDiscount),
       }),
     );
     dispatch(
@@ -146,6 +147,7 @@ export const signOut = () => async (dispatch: Dispatch) => {
     dispatch(logoutState());
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    localStorage.removeItem('lastVisitedPage');
   } catch (err) {
     console.error(err);
   }
@@ -209,9 +211,11 @@ export const updateProfile =
 
       dispatch(updateProfileState({ ...params }));
       localStorage.setItem('user', JSON.stringify(data?.data));
-    } catch (err) {
-      console.log(err);
-      toast.error('Update profile failed');
+
+      return data?.data;
+    } catch (err: any) {
+      console.error(err);
+      return err.response.data.message;
     }
   };
 
@@ -234,9 +238,10 @@ export const updateAvatar =
 
       dispatch(updateAvatarState(image));
       localStorage.setItem('user', JSON.stringify(data?.data));
+      return true;
     } catch (err) {
-      console.log(err);
-      toast.error('Update avatar failed');
+      console.error(err);
+      return false;
     }
   };
 

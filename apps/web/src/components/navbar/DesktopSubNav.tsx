@@ -8,7 +8,7 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import { ChevronRightIcon } from '@chakra-ui/icons';
-import { NavItem } from './Navbar';
+import { NavItem } from "@/interface/navbar.interface";
 
 const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
   return (
