@@ -30,6 +30,7 @@ import { toast } from 'react-toastify';
 
 const Page = () => {
   const user = useAppSelector((state) => state.auth.user);
+  const cart = useAppSelector((state) => state.cart);
   const [data, setData] = useState({
     addresses: [],
     pages: 1,
@@ -73,15 +74,17 @@ const Page = () => {
       <Card my={10}>
         <CardBody>
           <Flex gap={4} pb={8}>
-            <Button
-              colorScheme="green"
-              px={8}
-              onClick={() => {
-                router.push(`/checkout`);
-              }}
-            >
-              Go to Checkout
-            </Button>
+            {cart.itemsCount > 0 && (
+              <Button
+                colorScheme="green"
+                px={8}
+                onClick={() => {
+                  router.push(`/checkout`);
+                }}
+              >
+                Go to Checkout
+              </Button>
+            )}
             <Input
               placeholder="Search..."
               value={filters.keyword}

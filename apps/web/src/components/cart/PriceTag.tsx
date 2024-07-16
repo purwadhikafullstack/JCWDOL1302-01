@@ -25,7 +25,7 @@ export const PriceTag = ({ price, discount, isBuy1Get1 }: PriceTagProps) => {
             {FormatCurrency(price)}
           </Text>
           <Badge variant="solid" colorScheme="green">
-            Discount
+            <Text fontSize={'smaller'}>Discount</Text>
           </Badge>
         </Flex>
       ) : (
@@ -35,7 +35,7 @@ export const PriceTag = ({ price, discount, isBuy1Get1 }: PriceTagProps) => {
       )}
       {isBuy1Get1 && (
         <Badge variant="solid" colorScheme="green">
-          Buy 1 Get 1
+          <Text fontSize={'smaller'}>Buy 1 Get 1</Text>
         </Badge>
       )}
     </Flex>

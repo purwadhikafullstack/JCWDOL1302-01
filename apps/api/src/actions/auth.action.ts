@@ -70,7 +70,7 @@ const loginAction = async (data: Auth) => {
       role: user.role.name,
     };
 
-    const token = sign(payload, String(API_KEY), { expiresIn: '1h' });
+    const token = sign(payload, String(API_KEY), { expiresIn: '10h' });
 
     return { user, token };
   } catch (err) {

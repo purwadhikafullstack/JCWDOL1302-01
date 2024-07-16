@@ -33,10 +33,6 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     jwt: async ({ token, user }) => {
-      // get user by id
-      // create jwt payload
-      // create jwt token
-      // save token in local storage
       if (user) token.id = user.id;
       return token;
     },

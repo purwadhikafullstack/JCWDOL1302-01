@@ -104,22 +104,6 @@ const LoginView = ({ callbackUrl, authError }: Props) => {
           >
             <Stack spacing={8}>
               <LoginForm />
-              <Divider />
-              <Center flex={'1'} flexDirection={'column'}>
-                <Button
-                  w={'full'}
-                  maxW={'md'}
-                  variant={'outline'}
-                  leftIcon={<FcGoogle />}
-                  onClick={() => {
-                    signInNextAuth('google', { callbackUrl });
-                  }}
-                >
-                  <Center>
-                    <Text>Sign in with Google</Text>
-                  </Center>
-                </Button>
-              </Center>
             </Stack>
           </Box>
         </Stack>

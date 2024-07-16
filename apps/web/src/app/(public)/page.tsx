@@ -5,7 +5,7 @@ import Category from '@/components/products/category';
 import Hero from '@/components/hero/hero';
 import GeoLocation from '@/components/navbar/GeoLocation';
 import BannerPromo from '@/components/promo/BannerPromo';
-import { Divider, Stack } from '@chakra-ui/react';
+import { Center, Divider, Stack } from '@chakra-ui/react';
 import { useEffect } from 'react';
 
 export default function Home() {
@@ -25,14 +25,19 @@ export default function Home() {
   }, []);
   return (
     <>
-      <Stack bgGradient={'linear(to-b, white, gray.100)'}>
-        <GeoLocation />
-        <Hero />
-        <Category />
-        <Divider />
-        <BannerPromo />
-        <ProductList />
-      </Stack>
+      <Center>
+        <Stack
+          bgGradient={'linear(to-b, white, gray.100)'}
+          maxWidth={{ base: '100%', sm: '1280px' }}
+        >
+          <GeoLocation />
+          <Hero />
+          <Category />
+          <Divider />
+          <BannerPromo />
+          <ProductList />
+        </Stack>
+      </Center>
     </>
   );
 }

@@ -70,31 +70,6 @@ export default function InnerForm(props: FormikProps<FormValues>) {
               Already have account?
             </Text>
           </Link>
-          <Divider />
-          <Button variant={'none'}>
-            <Text
-              color={'blue.400'}
-              textAlign={'center'}
-              _hover={{ color: 'blue.500' }}
-            >
-              Redeem referral code
-            </Text>
-          </Button>
-          <Center flex={'1'} flexDirection={'column'}>
-            <Button
-              w={'full'}
-              maxW={'md'}
-              variant={'outline'}
-              leftIcon={<FcGoogle />}
-              onClick={() => {
-                // signInNextAuth('google', { callbackUrl });
-              }}
-            >
-              <Center>
-                <Text>Sign Up with Google</Text>
-              </Center>
-            </Button>
-          </Center>
         </Stack>
       </Form>
     </Box>

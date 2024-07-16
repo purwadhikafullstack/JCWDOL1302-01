@@ -53,13 +53,13 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     updateCartItemsState: (state: Cart, action: PayloadAction<{ itemsCount?: number, itemsPrice?: number, itemsDiscount?: number }>) => {
-      if (action.payload.itemsCount) {
+      if (action.payload.itemsCount !== undefined) {
         state.itemsCount = action.payload.itemsCount;
       }
-      if (action.payload.itemsPrice) {
+      if (action.payload.itemsPrice !== undefined) {
         state.itemsPrice = action.payload.itemsPrice;
       }
-      if (action.payload.itemsDiscount) {
+      if (action.payload.itemsDiscount !== undefined) {
         state.itemsDiscount = action.payload.itemsDiscount;
       }
       return updateCart(state);

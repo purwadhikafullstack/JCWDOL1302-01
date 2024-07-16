@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
+  Button,
   Card,
   CardBody,
   Center,
@@ -19,7 +20,10 @@ import {
 } from '@chakra-ui/react';
 import { FormatCurrency } from '@/utils/FormatCurrency';
 import Link from 'next/link';
-import { getProducts } from '@/services/product.service';
+import {
+  getAvailableProductsByStoreID,
+  getProducts,
+} from '@/services/product.service';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { getCategories } from '@/services/category.service';
 import { useSearchParams } from 'next/navigation';
@@ -59,8 +63,18 @@ const ProductCatalog = () => {
 
   useEffect(() => {
     (async () => {
-      const result = await getProducts(filters);
-      setData(result);
+      const location = JSON.parse(localStorage.getItem('location') || '{}');
+      const storeId = location.storeId;
+      if (storeId) {
+        const result = await getAvailableProductsByStoreID({
+          ...filters,
+          storeId,
+        });
+        setData(result);
+      } else {
+        const result = await getProducts(filters);
+        setData(result);
+      }
     })();
 
     const lastVisitedPage = () => {
@@ -109,16 +123,16 @@ const ProductCatalog = () => {
         bgGradient={'linear(to-r, teal.200, green.500)'}
       >
         <Center>
-        <Grid
-          templateColumns={{
-            base: 'repeat(1, 1fr)',
-            sm: 'repeat(2, 1fr)',
-            md: 'repeat(3, 1fr)',
-            lg: 'repeat(4, 1fr)',
-          }}
-          gap={6}
-          maxWidth={1200}
-        >
+          <Grid
+            templateColumns={{
+              base: 'repeat(1, 1fr)',
+              sm: 'repeat(2, 1fr)',
+              md: 'repeat(3, 1fr)',
+              lg: 'repeat(4, 1fr)',
+            }}
+            gap={6}
+            maxWidth={1200}
+          >
             {data.products?.map((product: any, index: number) => (
               <GridItem w={'full'} flexDirection={'column'} p={5} key={index}>
                 <Card
@@ -158,7 +172,7 @@ const ProductCatalog = () => {
                 </Card>
               </GridItem>
             ))}
-        </Grid>
+          </Grid>
         </Center>
         {data.pages > 1 && (
           <Box pt={4} display="flex" justifyContent="center">

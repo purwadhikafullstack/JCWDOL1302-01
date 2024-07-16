@@ -9,7 +9,6 @@ import {
   Input,
   Select,
   Text,
-  Button,
   FormControl,
   FormLabel,
   Stack,
@@ -17,14 +16,13 @@ import {
 import { useRouter } from 'next/navigation';
 
 import { getStoreByID } from '@/services/store.service';
-import {
-  getDiscountByID,
-  updateDiscount,
-} from '@/services/discount.service';
+import { getDiscountByID, updateDiscount } from '@/services/discount.service';
 import { getProducts } from '@/services/product.service';
 import { useAppSelector } from '@/lib/hooks';
 import { toast } from 'react-toastify';
-import { DISCOUNT_TYPE, DISCOUNT_UNIT } from "@/constants/discount.constant";
+import { DISCOUNT_TYPE, DISCOUNT_UNIT } from '@/constants/discount.constant';
+import EditDiscountButtons from './EditDiscountButtons';
+import FormDataTypeDiscount from './FormDataTypeDiscount';
 
 type Props = { params: { id: string } };
 
@@ -126,165 +124,31 @@ const Page = ({ params: { id: discountId } }: Props) => {
                     value={formData.type}
                     onChange={handleChange}
                   >
-                    <option value={DISCOUNT_TYPE.productDiscount}>{DISCOUNT_TYPE.productDiscount}</option>
-                    <option value={DISCOUNT_TYPE.minimumPurchase}>{DISCOUNT_TYPE.minimumPurchase}</option>
-                    <option value={DISCOUNT_TYPE.buy1Get1}>{DISCOUNT_TYPE.buy1Get1}</option>
-                    <option value={DISCOUNT_TYPE.freeShipping}>{DISCOUNT_TYPE.freeShipping}</option>
-                    <option value={DISCOUNT_TYPE.referralCode}>{DISCOUNT_TYPE.referralCode}</option>
+                    <option value={DISCOUNT_TYPE.productDiscount}>
+                      {DISCOUNT_TYPE.productDiscount}
+                    </option>
+                    <option value={DISCOUNT_TYPE.minimumPurchase}>
+                      {DISCOUNT_TYPE.minimumPurchase}
+                    </option>
+                    <option value={DISCOUNT_TYPE.buy1Get1}>
+                      {DISCOUNT_TYPE.buy1Get1}
+                    </option>
+                    <option value={DISCOUNT_TYPE.freeShipping}>
+                      {DISCOUNT_TYPE.freeShipping}
+                    </option>
+                    <option value={DISCOUNT_TYPE.referralCode}>
+                      {DISCOUNT_TYPE.referralCode}
+                    </option>
                   </Select>
                 </FormControl>
 
-                {(formData.type === DISCOUNT_TYPE.productDiscount ||
-                  formData.type === DISCOUNT_TYPE.buy1Get1) && (
-                    <>
-                      <FormControl id="productId" isRequired>
-                        <FormLabel>Product</FormLabel>
-                        <Select
-                          name="productId"
-                          width="auto"
-                          value={formData.productId}
-                          onChange={handleChange}
-                        >
-                          <option value=""></option>
-                          {products?.map((product: any) => (
-                            <option key={product.id} value={product.id}>
-                              {product.name}
-                            </option>
-                          ))}
-                        </Select>
-                      </FormControl>
-                    </>
-                  )}
-
-                {(formData.type === DISCOUNT_TYPE.productDiscount ||
-                  formData.type === DISCOUNT_TYPE.minimumPurchase) && (
-                    <>
-                      <FormControl id="amount" isRequired>
-                        <FormLabel>Amount</FormLabel>
-                        <Input
-                          name="amount"
-                          placeholder="Amount"
-                          _placeholder={{ color: 'gray.500' }}
-                          type="number"
-                          value={formData.amount}
-                          onChange={handleChange}
-                        />
-                      </FormControl>
-                      <FormControl id="unit" isRequired>
-                        <FormLabel>Unit</FormLabel>
-                        <Select
-                          name="unit"
-                          width="auto"
-                          value={formData.unit}
-                          onChange={handleChange}
-                        >
-                          <option value=""></option>
-                          <option value={DISCOUNT_UNIT.amount}>{DISCOUNT_UNIT.amount}</option>
-                          <option value={DISCOUNT_UNIT.percentage}>{DISCOUNT_UNIT.percentage}</option>
-                        </Select>
-                      </FormControl>
-                    </>
-                  )}
-
-                {formData.type === DISCOUNT_TYPE.referralCode && (
-                  <>
-                    <FormControl id="amount" isRequired>
-                      <FormLabel>Amount</FormLabel>
-                      <Input
-                        name="amount"
-                        placeholder="Amount"
-                        _placeholder={{ color: 'gray.500' }}
-                        type="number"
-                        value={formData.amount}
-                        onChange={handleChange}
-                      />
-                    </FormControl>
-                    <FormControl id="unit" isRequired>
-                      <FormLabel>Unit</FormLabel>
-                      <Select
-                        name="unit"
-                        width="auto"
-                        value={formData.unit}
-                        onChange={handleChange}
-                      >
-                        <option value=""></option>
-                        <option value={DISCOUNT_UNIT.amount}>{DISCOUNT_UNIT.amount}</option>
-                      </Select>
-                    </FormControl>
-                  </>
-                )}
-
-                {formData.type === DISCOUNT_TYPE.minimumPurchase && (
-                  <>
-                    <FormControl id="minimumPrice" isRequired>
-                      <FormLabel>Minimum Total Price</FormLabel>
-                      <Input
-                        name="minimumPrice"
-                        placeholder="Minimum Total Price"
-                        _placeholder={{ color: 'gray.500' }}
-                        type="number"
-                        value={formData.minimumPrice}
-                        onChange={handleChange}
-                      />
-                    </FormControl>
-                    {formData.unit === 'Percentage' && (
-                      <FormControl id="maximumDiscount" isRequired>
-                        <FormLabel>Maximum Discount</FormLabel>
-                        <Input
-                          name="maximumDiscount"
-                          placeholder="Maximum Discount"
-                          _placeholder={{ color: 'gray.500' }}
-                          type="number"
-                          value={formData.maximumDiscount}
-                          onChange={handleChange}
-                        />
-                      </FormControl>
-                    )}
-                  </>
-                )}
-
-                {formData.type === DISCOUNT_TYPE.freeShipping && (
-                  <>
-                    <FormControl id="minimumOrders" isRequired>
-                      <FormLabel>Minimum Order</FormLabel>
-                      <Input
-                        name="minimumOrders"
-                        placeholder="Minimum Order"
-                        _placeholder={{ color: 'gray.500' }}
-                        type="number"
-                        value={formData.minimumOrders}
-                        onChange={handleChange}
-                      />
-                    </FormControl>
-                  </>
-                )}
-
-                <Stack spacing={6} direction={['column', 'row']}>
-                  <Button
-                    onClick={() => {
-                      router.push(`/admin/discounts`);
-                    }}
-                    bg={'red.400'}
-                    color={'white'}
-                    w="full"
-                    _hover={{
-                      bg: 'red.500',
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    type="submit"
-                    bg={'blue.400'}
-                    color={'white'}
-                    w="full"
-                    _hover={{
-                      bg: 'blue.500',
-                    }}
-                  >
-                    Update
-                  </Button>
-                </Stack>
+                <FormDataTypeDiscount
+                  formData={formData}
+                  handleChange={handleChange}
+                  products={products}
+                  store={store}
+                />
+                <EditDiscountButtons />
               </Stack>
             </form>
           </TableContainer>
