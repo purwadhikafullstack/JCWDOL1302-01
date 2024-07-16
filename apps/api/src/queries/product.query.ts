@@ -60,6 +60,80 @@ const getProductsQuery = async (
   }
 };
 
+const getAvailableProductsByStoreIDQuery = async (
+  filters: IFilterProduct,
+): Promise<IResultProduct> => {
+  try {
+    const {
+      storeId = '',
+      category = '',
+      keyword = '',
+      page = 1,
+      size = 1000,
+    } = filters;
+
+    const products = await prisma.product.findMany({
+      include: {
+        category: true,
+        productImages: true,
+      },
+      where: {
+        name: {
+          contains: keyword,
+        },
+        category: {
+          slug: {
+            contains: category,
+          },
+        },
+        stocks: {
+          some: {
+            storeId,
+            remainingStock: {
+              gt: 0,
+            },
+          },
+        },
+      },
+      orderBy: {
+        name: 'asc',
+      },
+      skip: Number(page) > 0 ? (Number(page) - 1) * Number(size) : 0,
+      take: Number(size),
+    });
+
+    const data = await prisma.product.aggregate({
+      _count: {
+        id: true,
+      },
+      where: {
+        name: {
+          contains: keyword,
+        },
+        category: {
+          slug: {
+            contains: category,
+          },
+        },
+        stocks: {
+          some: {
+            storeId,
+            remainingStock: {
+              gt: 0,
+            },
+          },
+        },
+      },
+    });
+    const count = data._count.id;
+    const pages = Math.ceil(count / size);
+
+    return { products, pages };
+  } catch (err) {
+    throw err;
+  }
+};
+
 const getProductByIDQuery = async (id: string): Promise<Product | null> => {
   try {
     const product = await prisma.product.findUnique({
@@ -209,4 +283,5 @@ export {
   deleteProductQuery,
   createProductImageQuery,
   deleteProductImageQuery,
+  getAvailableProductsByStoreIDQuery,
 };

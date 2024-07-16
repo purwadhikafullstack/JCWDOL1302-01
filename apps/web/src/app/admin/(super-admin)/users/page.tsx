@@ -27,6 +27,7 @@ import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { toast } from 'react-toastify';
 import { formatDate } from '@/utils/date';
 import { USER_ROLE } from "@/constants/user.constant";
+import { AddIcon } from "@chakra-ui/icons";
 
 const Page = () => {
   const [data, setData] = useState({
@@ -82,7 +83,9 @@ const Page = () => {
               onClick={() => {
                 router.push(`/admin/users/create`);
               }}
+              alignItems="center"
             >
+              <AddIcon fontSize="0.75rem" mr={1.5} />
               Add
             </Button>
           </Flex>

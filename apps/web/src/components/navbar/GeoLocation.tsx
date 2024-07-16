@@ -1,4 +1,6 @@
 'use client';
+
+import { getNearestStore } from '@/services/store.service';
 import React, { useEffect } from 'react';
 
 interface GeolocationCoords {
@@ -12,29 +14,32 @@ interface GeolocationPosition {
 
 const GeoLocation = () => {
   useEffect(() => {
-    const x: HTMLElement | null = document.getElementById('demo');
-
-    function getLocation(): void {
+    const getLocation = () => {
       const location = localStorage.getItem('location');
       if (!location) {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(showPosition);
         }
       }
-    }
+    };
 
-    function showPosition(position: GeolocationPosition): void {
-      localStorage.setItem(
-        'location',
-        JSON.stringify({
+    const showPosition = (position: GeolocationPosition) => {
+      (async () => {
+        const userLocation = {
           longitude: position.coords.longitude,
           latitude: position.coords.latitude,
-        }),
-      );
-    }
+        };
+        const store = await getNearestStore(userLocation);
+        localStorage.setItem(
+          'location',
+          JSON.stringify({ ...userLocation, storeId: store?.id }),
+        );
+      })();
+    };
 
     getLocation();
   }, []);
+
   return <></>;
 };
 

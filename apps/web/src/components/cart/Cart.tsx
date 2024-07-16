@@ -1,14 +1,6 @@
 'use client';
 
-import {
-  Box,
-  Divider,
-  Flex,
-  HStack,
-  Heading,
-  Stack,
-  useColorModeValue as mode,
-} from '@chakra-ui/react';
+import { Box, Divider, Flex, HStack, Heading, Stack } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 import { CartItem } from './CartItems';
 import { CartSummary } from './CartSummary';
@@ -103,10 +95,7 @@ const Cart = () => {
               <CartSummary />
               <HStack mt="6" fontWeight="semibold">
                 <p>or</p>
-                <Link
-                  style={{ color: 'rgb(49, 130, 206)' }}
-                  href="/products?category"
-                >
+                <Link style={{ color: 'rgb(49, 130, 206)' }} href="/products">
                   Continue shopping
                 </Link>
               </HStack>

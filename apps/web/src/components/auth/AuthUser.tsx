@@ -2,13 +2,13 @@
 
 import React, { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/lib/hooks';
-import { checkToken, signOut } from '@/lib/features/auth/authSlice';
+import { checkToken } from '@/lib/features/auth/authSlice';
 import { useRouter } from 'next/navigation';
 
 type Props = {
   children: React.ReactNode;
   url?: string;
-}
+};
 
 export default function AuthUser({ children, url = '/' }: Props) {
   const dispatch = useAppDispatch();

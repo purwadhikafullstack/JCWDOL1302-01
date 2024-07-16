@@ -16,11 +16,13 @@ const createStockController = async (
 ): Promise<void> => {
   try {
     const params = req.body;
+    const userId = req.user?.id;
     const data = await createStockAction({
       productId: params.productId,
       storeId: params.storeId,
       stock: Number(params.stock),
       type: 'tambah',
+      userId,
     });
 
     res.status(200).json({
@@ -40,9 +42,11 @@ const updateStockController = async (
   try {
     const { id } = req.params;
     const params = req.body;
+    const userId = req.user?.id;
     const data = await updateStockAction(id, {
       type: params.type,
       stock: Number(params.stock),
+      userId,
     });
 
     res.status(200).json({

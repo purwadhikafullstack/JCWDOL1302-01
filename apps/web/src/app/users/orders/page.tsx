@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Card,
   CardBody,
@@ -20,6 +20,13 @@ import {
   Select,
   IconButton,
   Icon,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverBody,
+  InputGroup,
+  InputRightElement,
+  useOutsideClick,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
@@ -27,20 +34,56 @@ import { useAppSelector } from '@/lib/hooks';
 import { getOrders } from '@/services/order.service';
 import { FormatCurrency } from '@/utils/FormatCurrency';
 import { formatDate } from '@/utils/date';
+import { endOfMonth, format, startOfMonth } from "date-fns";
+import { DateRange, Range, RangeKeyDict } from "react-date-range";
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
+import { FaCalendarAlt } from "react-icons/fa";
+import { ORDER_STATUS } from "@/constants/order.constant";
 
 const Page = () => {
+  const router = useRouter();
   const user = useAppSelector((state) => state.auth.user);
   const [data, setData] = useState({
     orders: [],
     pages: 1,
   });
-  const [filters, setFilters] = useState({
+  const [range, setRange] = useState<Range[]>([
+    {
+      startDate: startOfMonth(new Date()),
+      endDate: endOfMonth(new Date()),
+      key: 'selection',
+    },
+  ]);
+  const [filters, setFilters] = useState<any>({
     userId: user.id as string,
+    startDate: '',
+    endDate: '',
+    orderStatus: '',
     keyword: '',
     page: 1,
     size: 10,
   });
-  const router = useRouter();
+  const [showPicker, setShowPicker] = useState(false);
+  const ref = useRef(null);
+
+  useOutsideClick({
+    ref: ref,
+    handler: () => setShowPicker(false),
+  });
+
+  const handleRangeChange = (ranges: RangeKeyDict) => {
+    setRange([ranges.selection]);
+  };
+
+  useEffect(() => {
+    setFilters((prevFilters: any) => ({
+      ...prevFilters,
+      startDate: format(range[0].startDate!, 'yyyy-MM-dd'),
+      endDate: format(range[0].endDate!, 'yyyy-MM-dd'),
+      page: 1,
+    }));
+  }, [range]);
 
   useEffect(() => {
     (async () => {
@@ -50,13 +93,13 @@ const Page = () => {
   }, [filters]);
 
   return (
-    <Box>
+    <Box ref={ref}>
       <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
         Orders
       </Text>
       <Card my={10}>
         <CardBody>
-          <Flex gap={4} pb={8}>
+          <Flex gap={4} pb={8} direction={{ base: "column", md: "row" }}>
             <Input
               placeholder="Search..."
               value={filters.keyword}
@@ -64,6 +107,49 @@ const Page = () => {
                 setFilters({ ...filters, keyword: e.target.value, page: 1 })
               }
             />
+            <Select
+              name="type"
+              value={filters.orderStatus}
+              onChange={(e) =>
+                setFilters({ ...filters, orderStatus: e.target.value, page: 1 })
+              }
+            >
+              <option value="">- All Status -</option>
+              <option value={ORDER_STATUS.menungguPembayaran}>{ORDER_STATUS.menungguPembayaran}</option>
+              <option value={ORDER_STATUS.menungguKonfirmasiPembayaran}>{ORDER_STATUS.menungguKonfirmasiPembayaran}</option>
+              <option value={ORDER_STATUS.diproses}>{ORDER_STATUS.diproses}</option>
+              <option value={ORDER_STATUS.dikirim}>{ORDER_STATUS.dikirim}</option>
+              <option value={ORDER_STATUS.pesananDikonfirmasi}>{ORDER_STATUS.pesananDikonfirmasi}</option>
+              <option value={ORDER_STATUS.dibatalkan}>{ORDER_STATUS.dibatalkan}</option>
+            </Select>
+            <Popover isOpen={showPicker} onClose={() => setShowPicker(false)}>
+              <PopoverTrigger>
+                <InputGroup>
+                  <Input
+                    onClick={() => setShowPicker(true)}
+                    readOnly
+                    value={`${format(range[0].startDate!, 'dd/MM/yyyy')} - ${format(range[0].endDate!, 'dd/MM/yyyy')}`}
+                  />
+                  <InputRightElement>
+                    <IconButton
+                      aria-label="Open date picker"
+                      icon={<FaCalendarAlt />}
+                      onClick={() => setShowPicker(!showPicker)}
+                      variant="ghost"
+                    />
+                  </InputRightElement>
+                </InputGroup>
+              </PopoverTrigger>
+              <PopoverContent>
+                <PopoverBody>
+                  <DateRange
+                    ranges={range}
+                    onChange={handleRangeChange}
+                    moveRangeOnFirstSelection={false}
+                  />
+                </PopoverBody>
+              </PopoverContent>
+            </Popover>
           </Flex>
           <TableContainer>
             <Table variant="striped">
@@ -135,7 +221,7 @@ const Page = () => {
                 aria-label="left"
                 icon={<Icon as={FiChevronLeft} />}
                 onClick={() =>
-                  setFilters((prevFilters) => ({
+                  setFilters((prevFilters: any) => ({
                     ...prevFilters,
                     page: Math.max(prevFilters.page - 1, 1),
                   }))
@@ -149,7 +235,7 @@ const Page = () => {
                 aria-label="right"
                 icon={<Icon as={FiChevronRight} />}
                 onClick={() =>
-                  setFilters((prevFilters) => ({
+                  setFilters((prevFilters: any) => ({
                     ...prevFilters,
                     page: Math.min(prevFilters.page + 1, data.pages),
                   }))

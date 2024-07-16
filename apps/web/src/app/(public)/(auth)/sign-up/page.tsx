@@ -1,12 +1,10 @@
 import React from 'react';
-import RegisterView from '@/components/signUp/SignUp';
+import SignUp from '@/components/sign-up/SignUp';
 
-const Page = () => {
+const SignUpPage = () => {
   return (
-    <div>
-      <RegisterView />
-    </div>
+    <SignUp />
   );
 };
 
-export default Page;
+export default SignUpPage;

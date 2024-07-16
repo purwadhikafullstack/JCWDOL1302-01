@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter, notFound } from 'next/navigation';
 import { getProductBySlug } from '@/services/product.service';
-import ProductDetails from '@/components/ProductPage/products/ProductDetails';
+import ProductDetails from '@/components/products/ProductDetails';
 import Loading from "@/components/loading/Loading";
 import NotFoundPage from "@/app/not-found";
 

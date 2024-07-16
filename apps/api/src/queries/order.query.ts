@@ -7,12 +7,15 @@ import {
 import { getCartByUserIDQuery, resetCartItemsQuery } from './cart.query';
 import {
   getStockByProductIdAndStoreIdQuery,
+  returnOrderStocksQuery,
   updateStockQuery,
 } from './stock.query';
 import { getDiscountsByStoreIDQuery } from './discount.query';
 import { DISCOUNT_TYPE } from '@/constants/discount.constant';
 import { createVoucherQuery } from './voucher.query';
 import { ORDER_STATUS } from '@/constants/order.constant';
+import { subDays, subHours } from 'date-fns';
+import { updatePaymentStatusQuery } from "./payment.query";
 
 const prisma = new PrismaClient();
 
@@ -21,17 +24,31 @@ const getOrdersQuery = async (filters: IFilterOrder): Promise<IResultOrder> => {
     const {
       userId = '',
       storeId = '',
+      startDate = '',
+      endDate = '',
+      orderStatus = '',
       keyword = '',
       page = 1,
       size = 1000,
     } = filters;
-    const conditions: any = {
+
+    let conditions: any = {
       orderNumber: {
         contains: keyword,
       },
     };
     if (userId) conditions.userId = userId;
     if (storeId) conditions.storeId = storeId;
+    if (orderStatus) conditions.orderStatus = orderStatus;
+    if (startDate && endDate) {
+      conditions = {
+        ...conditions,
+        orderDate: {
+          gte: new Date(startDate),
+          lte: new Date(endDate),
+        },
+      };
+    }
 
     const orders = await prisma.order.findMany({
       include: {
@@ -123,10 +140,10 @@ const createOrderQuery = async (data: IOrder): Promise<Order> => {
 
         // get discounts
         const discounts = await getDiscountsByStoreIDQuery(data.storeId);
-        const storeDiscounts = discounts?.filter(discount => {
+        const storeDiscounts = discounts?.filter((discount) => {
           return [
             DISCOUNT_TYPE.minimumPurchase,
-            DISCOUNT_TYPE.freeShipping
+            DISCOUNT_TYPE.freeShipping,
           ].includes(discount.type);
         });
         const dataOrders = await getOrdersQuery({ userId: data.userId });
@@ -135,13 +152,10 @@ const createOrderQuery = async (data: IOrder): Promise<Order> => {
         // create vouchers
         for (const discount of storeDiscounts) {
           if (
-            (
-              discount.type === DISCOUNT_TYPE.minimumPurchase &&
-              data.totalPrice >= Number(discount.minimumPrice)
-            ) || (
-              discount.type === DISCOUNT_TYPE.freeShipping &&
-              totalOrders >= Number(discount.minimumOrders)
-            )
+            (discount.type === DISCOUNT_TYPE.minimumPurchase &&
+              data.totalPrice >= Number(discount.minimumPrice)) ||
+            (discount.type === DISCOUNT_TYPE.freeShipping &&
+              totalOrders >= Number(discount.minimumOrders))
           ) {
             await createVoucherQuery({
               userId: data.userId,
@@ -162,20 +176,17 @@ const createOrderQuery = async (data: IOrder): Promise<Order> => {
   }
 };
 
-const confirmShippingOrderQuery = async () => {
+const confirmShippingOrdersQuery = async () => {
   try {
-    const twoDaysAgo = new Date();
-    twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
-
     const orders = await prisma.order.updateMany({
+      data: {
+        orderStatus: ORDER_STATUS.pesananDikonfirmasi,
+      },
       where: {
         orderStatus: ORDER_STATUS.dikirim,
         shippingDate: {
-          gt: twoDaysAgo,
+          lt: subDays(new Date(), 2),
         },
-      },
-      data: {
-        orderStatus: ORDER_STATUS.pesananDikonfirmasi,
       },
     });
     return orders;
@@ -184,8 +195,40 @@ const confirmShippingOrderQuery = async () => {
   }
 };
 
+const cancelUnconfirmedOrdersQuery = async () => {
+  try {
+    const trx = await prisma.$transaction(async (prisma) => {
+      try {
+        const orders = await prisma.order.findMany({
+          where: {
+            paymentMethod: 'BANK',
+            paymentImage: null,
+            orderStatus: ORDER_STATUS.menungguPembayaran,
+            orderDate: {
+              lt: subHours(new Date(), 1),
+            },
+          },
+        });
+
+        for (const order of orders) {
+          await updatePaymentStatusQuery(order.id, ORDER_STATUS.dibatalkan);
+        }
+
+        return orders;
+      } catch (err) {
+        throw err;
+      }
+    });
+
+    return trx;
+  } catch (err) {
+    throw err;
+  }
+};
+
 export {
-  confirmShippingOrderQuery,
+  confirmShippingOrdersQuery,
+  cancelUnconfirmedOrdersQuery,
   getOrdersQuery,
   getOrderByIDQuery,
   createOrderQuery,

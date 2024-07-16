@@ -3,7 +3,6 @@ export const ORDER_STATUS: {
   dibatalkan: string;
   menungguKonfirmasiPembayaran: string;
   diproses: string;
-  pembayaranGagal: string;
   dikirim: string;
   pesananDikonfirmasi: string;
 } = {
@@ -11,7 +10,6 @@ export const ORDER_STATUS: {
   dibatalkan: "Dibatalkan",
   menungguKonfirmasiPembayaran: "Menunggu Konfirmasi Pembayaran",
   diproses: "Diproses",
-  pembayaranGagal: "Pembayaran Gagal",
   dikirim: "Dikirim",
   pesananDikonfirmasi: "Pesanan Dikonfirmasi"
 }

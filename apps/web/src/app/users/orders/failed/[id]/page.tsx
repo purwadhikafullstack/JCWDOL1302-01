@@ -30,7 +30,7 @@ const Page = ({ params: { id } }: Props) => {
       let data = await getOrderByID(id);
 
       if (data.orderStatus === ORDER_STATUS.menungguPembayaran) {
-        const formData = { orderStatus: ORDER_STATUS.pembayaranGagal };
+        const formData = { orderStatus: ORDER_STATUS.dibatalkan };
         await updatePaymentStatus(id, formData);
 
         data = await getOrderByID(id);

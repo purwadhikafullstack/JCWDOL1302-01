@@ -11,7 +11,6 @@ import {
   useDisclosure,
   Image,
   Text,
-  Show,
   Avatar,
   VStack,
   HStack,
@@ -23,7 +22,7 @@ import {
   AvatarBadge,
   Badge,
 } from '@chakra-ui/react';
-import { HamburgerIcon, CloseIcon, SmallCloseIcon } from '@chakra-ui/icons';
+import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import DesktopNav from './DesktopNav';
 import MobileNav from './MobileNav';
 import Link from 'next/link';
@@ -32,13 +31,7 @@ import { FiChevronDown, FiShoppingCart } from 'react-icons/fi';
 import { signOut } from '@/lib/features/auth/authSlice';
 import { useRouter } from 'next/navigation';
 import { USER_ROLE } from '@/constants/user.constant';
-
-export interface NavItem {
-  label: string;
-  subLabel?: string;
-  children?: Array<NavItem>;
-  href?: string;
-}
+import SignInButton from "./SignInButton";
 
 export default function Navbar() {
   const { isOpen, onToggle } = useDisclosure();
@@ -166,11 +159,7 @@ export default function Navbar() {
                       </Box>
                     </HStack>
                   </MenuButton>
-                  <MenuList
-                    // bg={useColorModeValue('white', 'gray.900')}
-                    // borderColor={useColorModeValue('gray.200', 'gray.700')}
-                    zIndex={10}
-                  >
+                  <MenuList zIndex={10}>
                     <MenuItem
                       onClick={() => {
                         router.push(
@@ -197,44 +186,7 @@ export default function Navbar() {
               </Flex>
             </HStack>
           ) : (
-            <Stack
-              flex={{ base: 1, md: 0 }}
-              justify={'flex-end'}
-              direction={'row'}
-              spacing={2}
-            >
-              <Link href="/sign-in">
-                <Button
-                  p={{ base: '2', sm: '5' }}
-                  bg={'blue.400'}
-                  color={'white'}
-                  fontSize={'sm'}
-                  fontWeight={600}
-                  borderRadius={'lg'}
-                  _hover={{ bg: 'blue.500' }}
-                  cursor={'pointer'}
-                >
-                  Sign In
-                </Button>
-              </Link>
-              <Show above="sm">
-                <Link href={'/sign-up'}>
-                  <Button
-                    mr={0}
-                    px={5}
-                    bg={'green.400'}
-                    color={'white'}
-                    fontSize={'sm'}
-                    fontWeight={600}
-                    borderRadius={'lg'}
-                    _hover={{ bg: 'green.500' }}
-                    cursor={'pointer'}
-                  >
-                    Sign Up
-                  </Button>
-                </Link>
-              </Show>
-            </Stack>
+            <SignInButton />
           )}
         </Flex>
 

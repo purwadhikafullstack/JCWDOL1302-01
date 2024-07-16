@@ -30,29 +30,33 @@ export default function UserProfileEdit(): JSX.Element {
       image: props.initialImage || user.image || '',
       phone: props.initialPhone || user.phone || '',
       gender: props.initialGender || user.gender || '',
-      birthDate:
-        props.initialBirthDate ||
-        format(new Date(user.birthDate as string), 'dd/MM/yyyy') ||
-        '',
+      birthDate: props.initialBirthDate || user.birthDate || '',
     }),
     validationSchema: UpdateProfileSchema,
     enableReinitialize: true,
-    handleSubmit(
+    async handleSubmit(
       { name, email, phone, gender, birthDate }: FormValues,
       { resetForm },
     ) {
-      dispatch(
-        updateProfile(user.id as string, {
-          name,
-          email,
-          phone,
-          gender,
-          birthDate,
-        }),
-      );
-      resetForm();
-      toast.success('Update user profile success');
-      router.push('/users/profile');
+      try {
+        const data = await dispatch(
+          updateProfile(user.id as string, {
+            name,
+            email,
+            phone,
+            gender,
+            birthDate,
+          }),
+        );
+
+        if (!data.id) throw new Error(data);
+
+        resetForm();
+        toast.success('Update user profile success');
+        router.push('/users/profile');
+      } catch (err: any) {
+        toast.error(err.message);
+      }
     },
   })(InnerForm);
 

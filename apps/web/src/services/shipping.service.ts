@@ -57,7 +57,7 @@ export const sendOrder = async (orderId: string) => {
     const order = data?.data;
     return order;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     toast.error('Send order failed');
   }
 };

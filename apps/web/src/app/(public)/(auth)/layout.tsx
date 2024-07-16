@@ -1,5 +1,5 @@
-import React from "react";
-import AuthUser from "@/components/auth/AuthUser";
+import React from 'react';
+import AuthUser from '@/components/auth/AuthUser';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

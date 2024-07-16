@@ -5,11 +5,13 @@ export interface IStock {
   productId: string;
   type: string;
   stock: number;
+  userId?: string;
 }
 
 export interface IUpdateStock {
   type: string;
   stock: number;
+  userId?: string;
 }
 
 export interface IFilterStock {

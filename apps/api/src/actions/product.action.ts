@@ -4,6 +4,7 @@ import {
   createProductQuery,
   deleteProductImageQuery,
   deleteProductQuery,
+  getAvailableProductsByStoreIDQuery,
   getProductByIDQuery,
   getProductBySlugOrNameQuery,
   getProductsQuery,
@@ -28,6 +29,16 @@ const getProductsAction = async (
   }
 };
 
+const getAvailableProductsByStoreIDAction = async (
+  filters: IFilterProduct,
+): Promise<IResultProduct> => {
+  try {
+    const products = await getAvailableProductsByStoreIDQuery(filters);
+    return products;
+  } catch (err) {
+    throw err;
+  }
+};
 const getProductByIDAction = async (id: string): Promise<Product | null> => {
   try {
     const product = await getProductByIDQuery(id);
@@ -120,4 +131,5 @@ export {
   getProductBySlugAction,
   createProductImageAction,
   deleteProductImageAction,
+  getAvailableProductsByStoreIDAction,
 };

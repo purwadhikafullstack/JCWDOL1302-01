@@ -229,7 +229,6 @@ const Page = ({ params: { id } }: Props) => {
                 <OrderStatus status='info' text={order?.orderStatus} />
               ) : [
                 ORDER_STATUS.dibatalkan,
-                ORDER_STATUS.pembayaranGagal,
               ].includes(order?.orderStatus) ? (
                 <OrderStatus status='error' text={order?.orderStatus} />
               ) : (
@@ -253,7 +252,7 @@ const Page = ({ params: { id } }: Props) => {
               </FormControl>
             )}
             {order?.orderStatus &&
-              order?.orderStatus === ORDER_STATUS.menungguPembayaran ? (
+            order?.orderStatus === ORDER_STATUS.menungguPembayaran ? (
               <Stack spacing={6} direction={['column', 'row']} mt={15}>
                 <Button
                   onClick={handleCancel}

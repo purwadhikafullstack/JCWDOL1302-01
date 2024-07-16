@@ -1,5 +1,10 @@
-import { IFilterStock, IResultStock, IStock, IUpdateStock } from '@/interfaces/stock.interface';
-import { Stock, PrismaClient } from '@prisma/client';
+import {
+  IFilterStock,
+  IResultStock,
+  IStock,
+  IUpdateStock,
+} from '@/interfaces/stock.interface';
+import { Stock, PrismaClient, Order } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -16,15 +21,30 @@ const createStockQuery = async (stockData: IStock): Promise<Stock> => {
           },
         });
 
-        await prisma.stockHistory.create({
-          data: {
-            stockProduct: {
+        let dataStockHistory: any = {
+          stockProduct: {
+            connect: {
+              id: stock.id,
+            },
+          },
+          type: stockData.type,
+          stock: stockData.stock,
+        };
+
+        if (stockData.userId) {
+          dataStockHistory = {
+            ...dataStockHistory,
+            createdByUser: {
               connect: {
-                id: stock.id,
+                id: stockData.userId,
               },
             },
-            type: stockData.type,
-            stock: stockData.stock,
+          };
+        }
+
+        await prisma.stockHistory.create({
+          data: {
+            ...dataStockHistory,
           },
         });
 
@@ -67,22 +87,37 @@ const updateStockQuery = async (
 
         const updatedStock = await prisma.stock.update({
           data: {
-            ...data
+            ...data,
           },
           where: {
             id,
           },
         });
 
-        await prisma.stockHistory.create({
-          data: {
-            stockProduct: {
+        let dataStockHistory: any = {
+          stockProduct: {
+            connect: {
+              id: stock.id,
+            },
+          },
+          type: stockData.type,
+          stock: stockData.stock,
+        };
+
+        if (stockData.userId) {
+          dataStockHistory = {
+            ...dataStockHistory,
+            createdByUser: {
               connect: {
-                id: stock.id,
+                id: stockData.userId,
               },
             },
-            type: stockData.type,
-            stock: stockData.stock,
+          };
+        }
+
+        await prisma.stockHistory.create({
+          data: {
+            ...dataStockHistory,
           },
         });
 
@@ -112,8 +147,8 @@ const getStocksQuery = async (filters: IFilterStock): Promise<IResultStock> => {
       store: {
         name: {
           contains: keyword,
-        }
-      }
+        },
+      },
     };
 
     if (storeId) conditions.storeId = storeId;
@@ -124,7 +159,7 @@ const getStocksQuery = async (filters: IFilterStock): Promise<IResultStock> => {
         store: true,
       },
       where: {
-        ...conditions
+        ...conditions,
       },
       skip: Number(page) > 0 ? (Number(page) - 1) * Number(size) : 0,
       take: Number(size),
@@ -183,7 +218,10 @@ const getStockByIDQuery = async (id: string): Promise<Stock | null> => {
   }
 };
 
-const getStockByProductIdAndStoreIdQuery = async (productId: string, storeId: string): Promise<Stock | null> => {
+const getStockByProductIdAndStoreIdQuery = async (
+  productId: string,
+  storeId: string,
+): Promise<Stock | null> => {
   try {
     const stock = await prisma.stock.findFirst({
       where: {
@@ -198,6 +236,35 @@ const getStockByProductIdAndStoreIdQuery = async (productId: string, storeId: st
   }
 };
 
+const returnOrderStocksQuery = async (order: Order) => {
+  try {
+    const orderItems = await prisma.orderItem.findMany({
+      where: {
+        orderId: order.id,
+      },
+    });
+
+    // return stock
+    for (const item of orderItems) {
+      const stock = await getStockByProductIdAndStoreIdQuery(
+        item.productId,
+        order.storeId,
+      );
+
+      if (stock) {
+        await updateStockQuery(stock.id, {
+          type: 'tambah',
+          stock: Number(item.quantity + (item.bonusQuantity || 0)),
+        });
+      }
+    }
+
+    return order;
+  } catch (err) {
+    throw err;
+  }
+};
+
 export {
   createStockQuery,
   updateStockQuery,
@@ -205,4 +272,5 @@ export {
   getStocksByProductIDQuery,
   getStockByIDQuery,
   getStockByProductIdAndStoreIdQuery,
+  returnOrderStocksQuery,
 };

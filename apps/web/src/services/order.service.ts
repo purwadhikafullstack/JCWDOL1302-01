@@ -1,7 +1,18 @@
 import { IFilterOrder } from "@/interface/order.interface";
 import instance from '@/utils/axiosInstance';
 
-export const getOrders = async ({ userId = "", storeId = "", keyword = "", page = 1, size = 10 }: IFilterOrder) => {
+export const getOrders = async (props: IFilterOrder) => {
+  const {
+    userId = "",
+    storeId = "",
+    startDate = "",
+    endDate = "",
+    orderStatus = "",
+    keyword = "",
+    page = 1,
+    size = 10
+  } = props;
+
   try {
     const token = localStorage.getItem('token');
     const config = {
@@ -9,7 +20,7 @@ export const getOrders = async ({ userId = "", storeId = "", keyword = "", page 
         Authorization: `Bearer ${token}`,
       }
     };
-    const { data } = await instance.get(`/orders?userId=${userId}&storeId=${storeId}&keyword=${keyword}&page=${page}&size=${size}`, config);
+    const { data } = await instance.get(`/orders?userId=${userId}&storeId=${storeId}&startDate=${startDate}&endDate=${endDate}&orderStatus=${orderStatus}&keyword=${keyword}&page=${page}&size=${size}`, config);
     const orders = data?.data;
     return orders;
   } catch (err) {

@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { ChakraProvider } from '@chakra-ui/react';
-import StoreProvider from './StoreProvider';
+import StoreProvider from '@/components/layout/StoreProvider';
 import Auth from '@/components/auth/Auth';
 import { ToastContainer } from 'react-toastify';
 

@@ -1,15 +1,15 @@
-import { Store } from "@prisma/client"
-import haversine from "haversine"
+import { Store } from '@prisma/client';
+import haversine from 'haversine';
 
-export const getNearestStores = ({
+export const getNearestStore = ({
   stores,
-  userLocation
+  userLocation,
 }: {
-  stores: Store[],
+  stores: Store[];
   userLocation: {
     longitude: number | undefined;
     latitude: number | undefined;
-  }
+  };
 }): Store | null => {
   if (!userLocation.longitude || !userLocation.latitude) return null;
 
@@ -18,13 +18,16 @@ export const getNearestStores = ({
 
   for (const store of stores) {
     if (store.longitude && store.latitude) {
-      const distance = haversine({
-        longitude: userLocation.longitude,
-        latitude: userLocation.latitude
-      }, {
-        longitude: store.longitude,
-        latitude: store.latitude
-      });
+      const distance = haversine(
+        {
+          longitude: userLocation.longitude,
+          latitude: userLocation.latitude,
+        },
+        {
+          longitude: store.longitude,
+          latitude: store.latitude,
+        },
+      );
 
       if (nearestdistance === null || distance < nearestdistance) {
         nearestdistance = distance;
@@ -34,4 +37,4 @@ export const getNearestStores = ({
   }
 
   return nearestStore;
-}
+};

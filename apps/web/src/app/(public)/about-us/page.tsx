@@ -1,5 +1,4 @@
-import AboutUs from '@/components/AboutUs';
-import React from 'react';
+import AboutUs from '@/components/about-us/AboutUs';
 
 const page = () => {
   return <AboutUs />;

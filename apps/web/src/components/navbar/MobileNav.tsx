@@ -8,9 +8,9 @@ import {
   Collapse,
 } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
-import { NAV_ITEMS } from './DesktopNav';
-import { NavItem } from './Navbar';
 import Link from 'next/link';
+import { NAV_ITEMS } from "@/constants/navbar.constant";
+import { NavItem } from "@/interface/navbar.interface";
 
 const MobileNav = () => {
   return (

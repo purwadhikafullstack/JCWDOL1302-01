@@ -4,6 +4,7 @@ import {
   createProductImageAction,
   deleteProductAction,
   deleteProductImageAction,
+  getAvailableProductsByStoreIDAction,
   getProductByIDAction,
   getProductBySlugAction,
   getProductsAction,
@@ -21,6 +22,24 @@ const getProductsController = async (
 
     res.status(200).json({
       message: 'Get products success',
+      data,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const getAvailableProductsByStoreIDController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const filters = req.query;
+    const data = await getAvailableProductsByStoreIDAction(filters);
+
+    res.status(200).json({
+      message: 'Get Available products success',
       data,
     });
   } catch (err) {
@@ -174,4 +193,5 @@ export {
   getProductBySlugController,
   createProductImageController,
   deleteProductImageController,
+  getAvailableProductsByStoreIDController,
 };

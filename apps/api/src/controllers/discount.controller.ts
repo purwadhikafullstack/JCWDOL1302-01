@@ -1,10 +1,11 @@
 import {
   createDiscountAction,
-  getDiscountAction,
+  getDiscountsAction,
   getDiscountByIDAction,
   getDiscountByProductIdAndStoreIdAction,
   getDiscountsByStoreIDAction,
   updateDiscountAction,
+  deleteDiscountAction,
 } from '@/actions/discount.action';
 import { Request, Response, NextFunction } from 'express';
 
@@ -35,14 +36,14 @@ const createDiscountController = async (
   }
 };
 
-const getDiscountController = async (
+const getDiscountsController = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ): Promise<void> => {
   try {
     const filters = req.query;
-    const data = await getDiscountAction(filters);
+    const data = await getDiscountsAction(filters);
 
     res.status(200).json({
       message: 'Get discount success',
@@ -124,7 +125,10 @@ const getDiscountByProductIdAndStoreIdController = async (
 ): Promise<void> => {
   try {
     const { productId, storeId } = req.params;
-    const data = await getDiscountByProductIdAndStoreIdAction(productId, storeId);
+    const data = await getDiscountByProductIdAndStoreIdAction(
+      productId,
+      storeId,
+    );
 
     res.status(200).json({
       message: 'Get discount success',
@@ -135,11 +139,30 @@ const getDiscountByProductIdAndStoreIdController = async (
   }
 };
 
+const deleteDiscountController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const data = await deleteDiscountAction(id);
+
+    res.status(200).json({
+      message: 'Delete discount success',
+      data,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 export {
+  deleteDiscountController,
   updateDiscountController,
   getDiscountByIDController,
   createDiscountController,
-  getDiscountController,
+  getDiscountsController,
   getDiscountsByStoreIDController,
   getDiscountByProductIdAndStoreIdController,
 };

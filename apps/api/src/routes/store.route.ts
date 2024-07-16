@@ -5,6 +5,7 @@ import {
   deleteStoreController,
   deleteUserStoreController,
   getDistanceStoresController,
+  getNearestStoreController,
   getStoreByIDController,
   getStoresController,
   getUnassignedUsersByStoreIDController,
@@ -40,6 +41,7 @@ router.get(
 );
 router.post('/users', verifyToken, superAdminGuard, createUserStoreController);
 router.post('/distance', verifyToken, getDistanceStoresController);
+router.post('/nearest', getNearestStoreController);
 router.patch('/:id', verifyToken, superAdminGuard, updateStoreController);
 router.patch('/:id', verifyToken, superAdminGuard, updateUserStoreController);
 router.delete('/:id', verifyToken, superAdminGuard, deleteStoreController);

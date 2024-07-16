@@ -5,7 +5,8 @@ import {
   IResultOrder,
 } from '@/interfaces/order.interface';
 import {
-  confirmShippingOrderQuery,
+  cancelUnconfirmedOrdersQuery,
+  confirmShippingOrdersQuery,
   createOrderQuery,
   getOrderByIDQuery,
   getOrdersQuery,
@@ -43,9 +44,18 @@ const createOrderAction = async (data: IOrder): Promise<Order | null> => {
   }
 };
 
-const confirmShippingOrderAction = async () => {
+const confirmShippingOrdersAction = async () => {
   try {
-    const orders = await confirmShippingOrderQuery();
+    const orders = await confirmShippingOrdersQuery();
+    return orders;
+  } catch (err) {
+    throw err;
+  }
+};
+
+const cancelUnconfirmedOrdersAction = async () => {
+  try {
+    const orders = await cancelUnconfirmedOrdersQuery();
     return orders;
   } catch (err) {
     throw err;
@@ -53,7 +63,8 @@ const confirmShippingOrderAction = async () => {
 };
 
 export {
-  confirmShippingOrderAction,
+  confirmShippingOrdersAction,
+  cancelUnconfirmedOrdersAction,
   getOrdersAction,
   getOrderByIDAction,
   createOrderAction,

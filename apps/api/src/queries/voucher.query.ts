@@ -13,6 +13,7 @@ const getVouchersByUserIDQuery = async (
       },
       where: {
         userId,
+        isUsed: false,
       },
     });
 
