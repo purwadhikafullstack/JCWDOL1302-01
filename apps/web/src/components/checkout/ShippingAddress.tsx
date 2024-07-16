@@ -19,19 +19,29 @@ const ShippingAddress = ({ store }: Props) => {
   useEffect(() => {
     (async () => {
       const data = await getAddresses({ userId: user.id as string, size: 1000 });
-      setAddresses(data?.addresses);
+      setAddresses(data?.addresses || []);
+
+      // const defaultAddress = data?.addresses?.find((address: any) => Boolean(address.isDefault));
+      // if (defaultAddress) handleChangeAddress(defaultAddress.id);
     })()
   }, [user.id]);
 
-  const address = useMemo(() => addresses.find(address => address.id === cart.userAddressId), [addresses, cart.userAddressId]);
+  const address = useMemo(() => addresses?.find(address => address.id === cart.userAddressId), [addresses, cart.userAddressId]);
 
-  const handleChangeAddress = (e: any) => {
-    const newUserAddressId = e.target.value;
-    const data = addresses.find(address => address.id === newUserAddressId);
+  const defaultAddress = useMemo(() => addresses?.find(address => Boolean(address.isDefault)), [addresses]);
+
+  useEffect(() => {
+    if (!defaultAddress?.id) return;
+    handleChangeAddress(defaultAddress.id);
+  }, [defaultAddress]);
+
+  const handleChangeAddress = (userAddressId: string) => {
+    if (!userAddressId) return;
+    const data = addresses?.find(address => address.id === userAddressId);
 
     dispatch(updateCartDestinationState({
       destination: data?.subdistrictId,
-      userAddressId: newUserAddressId
+      userAddressId: userAddressId
     }));
   }
 
@@ -51,15 +61,15 @@ const ShippingAddress = ({ store }: Props) => {
             <Select
               width="auto"
               value={cart.userAddressId}
-              onChange={handleChangeAddress}
+              onChange={(e) => handleChangeAddress(e.target.value)}
               flexGrow={1}
             >
-              <option value="">Select Label Address</option>
+              <option value="">- Select Label Address -</option>
               {addresses?.map((address: any) => (
                 <option
                   key={address.id}
                   value={address.id}
-                >{address.label}</option>
+                >{address.label + `${Boolean(address.isDefault) ? ' (Utama)' : ''}`}</option>
               ))}
             </Select>
             <Button

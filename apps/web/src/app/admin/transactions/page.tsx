@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Card,
   CardBody,
@@ -18,29 +18,64 @@ import {
   Flex,
   Input,
   Select,
-  IconButton,
-  Icon,
+  useOutsideClick,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useAppSelector } from '@/lib/hooks';
 import { getOrders } from '@/services/order.service';
 import { FormatCurrency } from '@/utils/FormatCurrency';
 import { formatDate } from '@/utils/date';
+import { endOfMonth, format, startOfMonth } from 'date-fns';
+import { Range, RangeKeyDict } from 'react-date-range';
+import { ORDER_STATUS } from '@/constants/order.constant';
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
+import DatePicker from './DatePicker';
+import TransactionsPagination from './TransactionsPagination';
 
 const Page = () => {
+  const router = useRouter();
   const user = useAppSelector((state) => state.auth.user);
   const [data, setData] = useState({
     orders: [],
     pages: 1,
   });
+  const [range, setRange] = useState<Range[]>([
+    {
+      startDate: startOfMonth(new Date()),
+      endDate: endOfMonth(new Date()),
+      key: 'selection',
+    },
+  ]);
   const [filters, setFilters] = useState({
     storeId: user.storeId as string,
+    startDate: '',
+    endDate: '',
+    orderStatus: '',
     keyword: '',
     page: 1,
     size: 10,
   });
-  const router = useRouter();
+  const [showPicker, setShowPicker] = useState(false);
+  const ref = useRef(null);
+
+  useOutsideClick({
+    ref: ref,
+    handler: () => setShowPicker(false),
+  });
+
+  const handleRangeChange = (ranges: RangeKeyDict) => {
+    setRange([ranges.selection]);
+  };
+
+  useEffect(() => {
+    setFilters((prevFilters: any) => ({
+      ...prevFilters,
+      startDate: format(range[0].startDate!, 'yyyy-MM-dd'),
+      endDate: format(range[0].endDate!, 'yyyy-MM-dd'),
+      page: 1,
+    }));
+  }, [range]);
 
   useEffect(() => {
     (async () => {
@@ -50,19 +85,52 @@ const Page = () => {
   }, [filters]);
 
   return (
-    <Box>
+    <Box ref={ref}>
       <Text fontSize="2xl" fontFamily="monospace" fontWeight="bold">
         Transactions
       </Text>
       <Card my={10}>
         <CardBody>
-          <Flex gap={4} pb={8}>
+          <Flex gap={4} pb={8} direction={{ base: 'column', md: 'row' }}>
             <Input
               placeholder="Search..."
               value={filters.keyword}
               onChange={(e) =>
                 setFilters({ ...filters, keyword: e.target.value, page: 1 })
               }
+            />
+            <Select
+              name="type"
+              value={filters.orderStatus}
+              onChange={(e) =>
+                setFilters({ ...filters, orderStatus: e.target.value, page: 1 })
+              }
+            >
+              <option value="">- All Status -</option>
+              <option value={ORDER_STATUS.menungguPembayaran}>
+                {ORDER_STATUS.menungguPembayaran}
+              </option>
+              <option value={ORDER_STATUS.menungguKonfirmasiPembayaran}>
+                {ORDER_STATUS.menungguKonfirmasiPembayaran}
+              </option>
+              <option value={ORDER_STATUS.diproses}>
+                {ORDER_STATUS.diproses}
+              </option>
+              <option value={ORDER_STATUS.dikirim}>
+                {ORDER_STATUS.dikirim}
+              </option>
+              <option value={ORDER_STATUS.pesananDikonfirmasi}>
+                {ORDER_STATUS.pesananDikonfirmasi}
+              </option>
+              <option value={ORDER_STATUS.dibatalkan}>
+                {ORDER_STATUS.dibatalkan}
+              </option>
+            </Select>
+            <DatePicker
+              range={range}
+              handleRangeChange={handleRangeChange}
+              showPicker={showPicker}
+              setShowPicker={setShowPicker}
             />
           </Flex>
           <TableContainer>
@@ -114,52 +182,11 @@ const Page = () => {
               </Tbody>
             </Table>
           </TableContainer>
-          <Box pt={4} display="flex" justifyContent="space-between">
-            <Select
-              width="auto"
-              value={filters.size}
-              onChange={(e) =>
-                setFilters({
-                  ...filters,
-                  size: parseInt(e.target.value),
-                  page: 1,
-                })
-              }
-            >
-              <option value="5">5 per page</option>
-              <option value="10">10 per page</option>
-              <option value="20">20 per page</option>
-              <option value="50">50 per page</option>
-            </Select>
-
-            <Box display="flex">
-              <IconButton
-                aria-label="left"
-                icon={<Icon as={FiChevronLeft} />}
-                onClick={() =>
-                  setFilters((prevFilters) => ({
-                    ...prevFilters,
-                    page: Math.max(prevFilters.page - 1, 1),
-                  }))
-                }
-                isDisabled={filters.page === 1}
-              />
-              <Box p={2}>
-                {filters.page} / {data.pages}
-              </Box>
-              <IconButton
-                aria-label="right"
-                icon={<Icon as={FiChevronRight} />}
-                onClick={() =>
-                  setFilters((prevFilters) => ({
-                    ...prevFilters,
-                    page: Math.min(prevFilters.page + 1, data.pages),
-                  }))
-                }
-                isDisabled={filters.page === data.pages}
-              />
-            </Box>
-          </Box>
+          <TransactionsPagination
+            data={data}
+            filters={filters}
+            setFilters={setFilters}
+          />
         </CardBody>
       </Card>
     </Box>

@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useRef, useEffect } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { Box } from '@chakra-ui/react';
@@ -14,15 +15,12 @@ const Map = ({
   latitude,
   handleChangeLonglat,
 }: Props) => {
-  const accessToken =
-    'pk.eyJ1IjoicmVoYW5hZGkiLCJhIjoiY2x4enRybzFzMGU1YzJ2cXZrcmxqYnkzZSJ9.vs6SmfosBPqUZ7HSvEsbhw';
-  const markerRef = useRef<mapboxgl.Marker | null>(null); // Store marker instance
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<mapboxgl.Map | null>(null);
 
   useEffect(() => {
     if (mapContainerRef.current) {
-      mapboxgl.accessToken = accessToken;
+      mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN as string;
       const map = new mapboxgl.Map({
         container: mapContainerRef.current,
         style: 'mapbox://styles/mapbox/streets-v11',
@@ -33,20 +31,6 @@ const Map = ({
       map.on('click', (e: { lngLat: { lng: any; lat: any } }) => {
         const { lng, lat } = e.lngLat;
         handleChangeLonglat(lng, lat);
-
-        // Create and add marker on click
-        if (!markerRef.current) {
-          // Check if marker exists
-          const marker = new mapboxgl.Marker({
-            color: 'green',
-          });
-          marker.setLngLat([lng, lat]).addTo(map);
-          markerRef.current = marker; // Store marker reference
-          // map.addLayer(marker as any);
-        } else {
-          // Update existing marker position
-          markerRef.current!.setLngLat([lng, lat]);
-        }
       });
 
       mapRef.current = map;

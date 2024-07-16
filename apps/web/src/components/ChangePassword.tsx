@@ -6,7 +6,6 @@ import {
   FormLabel,
   Input,
   InputGroup,
-  HStack,
   InputRightElement,
   Stack,
   Button,
@@ -19,7 +18,7 @@ import { useState } from 'react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 
-interface ChangePasswordProps { }
+interface ChangePasswordProps {}
 
 export default function ChangePassword(props: ChangePasswordProps) {
   const [showPassword, setShowPassword] = useState(false);

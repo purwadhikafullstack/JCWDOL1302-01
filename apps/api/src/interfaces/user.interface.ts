@@ -23,6 +23,7 @@ export interface IUpdateUser {
   birthDate?: Date;
   longitude?: number;
   latitude?: number;
+  isVerified?: boolean;
 }
 
 export interface IUpdatePassword {

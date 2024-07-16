@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import {
   Flex,
-  Box,
   FormControl,
   FormLabel,
   Input,
@@ -16,19 +15,17 @@ import {
 } from '@chakra-ui/react';
 
 const provinces = [
-  // Replace with your actual province data
   { id: 1, name: 'Province 1' },
   { id: 2, name: 'Province 2' },
-  // ... more provinces
 ];
 
-const addresses = []; // Replace with your actual address data
+const addresses = [];
 
 export default function CityAddressPage(): JSX.Element {
   const [selectedAddressId, setSelectedAddressId] = useState<string | null>(
     null,
   );
-  const [label, setLabel] = useState(''); // State for "Use this Address" label
+  const [label, setLabel] = useState('');
   const [street, setStreet] = useState('');
   const [city, setCity] = useState('');
   const [subDistrict, setSubDistrict] = useState('');
@@ -57,7 +54,6 @@ export default function CityAddressPage(): JSX.Element {
   };
 
   const handleSaveAddress = () => {
-    // Implement logic to save the address data (consider using a confirmation prompt for simplicity)
     if (window.confirm('Are you sure you want to save the address?')) {
       if (isAddingNew) {
         addresses.push({
@@ -69,7 +65,6 @@ export default function CityAddressPage(): JSX.Element {
           provinceId: selectedProvinceId,
         });
       } else {
-        // Update existing address (logic not shown for simplicity)
       }
       setSelectedAddressId(null);
       setIsAddingNew(false);
@@ -97,12 +92,10 @@ export default function CityAddressPage(): JSX.Element {
           </Checkbox>
         </FormControl>
 
-        {/* Button to add a new address */}
         <Button variant="outline" onClick={() => setIsAddingNew(true)}>
           Add New Address
         </Button>
 
-        {/* Form for address details */}
         {isAddingNew ? (
           <Text fontWeight="bold">Add New Address</Text>
         ) : (
@@ -112,7 +105,7 @@ export default function CityAddressPage(): JSX.Element {
           <FormLabel>Mark Address As</FormLabel>
           <Input
             name="label"
-            value={label} // Use separate state variable for label
+            value={label}
             onChange={handleInputChange}
             placeholder="Enter Label"
           />

@@ -16,6 +16,9 @@ export interface Cart {
   shippingService: string,
   shippingPrice: number,
   paymentMethod: string,
+  discountVoucherId: string,
+  shippingVoucherId: string,
+  referralVoucherId: string,
 }
 
 const cartState = {
@@ -34,6 +37,9 @@ const cartState = {
   shippingService: '',
   shippingPrice: 0,
   paymentMethod: '',
+  discountVoucherId: '',
+  shippingVoucherId: '',
+  referralVoucherId: '',
 } as Cart;
 
 const initialState = (
@@ -75,21 +81,35 @@ export const cartSlice = createSlice({
       state.shippingCourier = action.payload.shippingCourier;
       state.shippingService = action.payload.shippingService;
       state.shippingPrice = action.payload.shippingPrice;
+      state.shippingDiscount = 0;
+      state.shippingVoucherId = '';
       return updateCart(state);
     },
     updateCartPaymentState: (state: Cart, action: PayloadAction<{ paymentMethod: string }>) => {
       state.paymentMethod = action.payload.paymentMethod;
       return updateCart(state);
     },
-    updateCartDiscountState: (state: Cart, action: PayloadAction<{ voucherDiscount?: number, shippingDiscount?: number, referralDiscount?: number }>) => {
-      if (action.payload.voucherDiscount) {
+    updateCartDiscountState: (state: Cart, action: PayloadAction<{
+      voucherDiscount?: number,
+      shippingDiscount?: number,
+      referralDiscount?: number,
+      discountVoucherId?: string,
+      shippingVoucherId?: string,
+      referralVoucherId?: string
+    }>) => {
+      if (action.payload.voucherDiscount && action.payload.discountVoucherId) {
         state.voucherDiscount = action.payload.voucherDiscount;
+        state.discountVoucherId = action.payload.discountVoucherId;
       }
-      if (action.payload.shippingDiscount) {
+
+      if (action.payload.shippingDiscount && action.payload.shippingVoucherId) {
         state.shippingDiscount = action.payload.shippingDiscount;
+        state.shippingVoucherId = action.payload.shippingVoucherId;
       }
-      if (action.payload.referralDiscount) {
+
+      if (action.payload.referralDiscount && action.payload.referralVoucherId) {
         state.referralDiscount = action.payload.referralDiscount;
+        state.referralVoucherId = action.payload.referralVoucherId;
       }
       return updateCart(state);
     },

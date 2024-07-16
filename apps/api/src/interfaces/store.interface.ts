@@ -12,6 +12,7 @@ export interface IStore {
   postalCode?: string;
   longitude?: number;
   latitude?: number;
+  isDefault?: boolean;
 }
 
 export interface IUserStore {

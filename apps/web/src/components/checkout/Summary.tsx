@@ -48,8 +48,7 @@ export default function SummaryCartPage() {
 
   const calculateTotal = (): number => {
     const subtotal = calculateSubtotal();
-    // Add shipping cost or any other taxes here
-    const total = subtotal + 5; // Replace with actual calculation
+    const total = subtotal + 5;
     return total;
   };
 

@@ -4,14 +4,15 @@ import {
   createDiscountController,
   getDiscountByIDController,
   getDiscountByProductIdAndStoreIdController,
-  getDiscountController,
+  getDiscountsController,
   getDiscountsByStoreIDController,
   updateDiscountController,
+  deleteDiscountController,
 } from '@/controllers/discount.controller';
 
 const router = express.Router();
 
-router.get('/', verifyToken, adminGuard, getDiscountController);
+router.get('/', verifyToken, adminGuard, getDiscountsController);
 router.post('/', verifyToken, adminGuard, createDiscountController);
 router.get(
   '/store/:storeId',
@@ -22,9 +23,10 @@ router.get(
 router.get(
   '/product/:productId/store/:storeId',
   verifyToken,
-  getDiscountByProductIdAndStoreIdController
+  getDiscountByProductIdAndStoreIdController,
 );
 router.get('/:id', verifyToken, adminGuard, getDiscountByIDController);
 router.patch('/:id', verifyToken, adminGuard, updateDiscountController);
+router.delete('/:id', verifyToken, adminGuard, deleteDiscountController);
 
 export default router;

@@ -6,6 +6,12 @@ import {
 } from '@/interfaces/user.interface';
 import { PrismaClient, User } from '@prisma/client';
 import { genSalt, hash } from 'bcrypt';
+import { transporter } from '../helpers/nodemailer';
+import * as handlebars from 'handlebars';
+import path from 'path';
+import fs from 'fs';
+import { sign } from 'jsonwebtoken';
+import { API_KEY } from '@/config';
 
 const prisma = new PrismaClient();
 
@@ -127,6 +133,16 @@ const createUserQuery = async (userData: IUser): Promise<User> => {
 
 const updateUserQuery = async (id: string, data: IUpdateUser) => {
   try {
+    const currentUser = await getUserByIDQuery(id);
+    const isVerifyEmail =
+      currentUser?.email && data.email && currentUser.email !== data.email;
+
+    if (isVerifyEmail) {
+      const existUser = await getUserByEmailQuery(data.email as string);
+      if (existUser) throw new Error('New Email already exists');
+      data.isVerified = false;
+    }
+
     const user = await prisma.user.update({
       data: {
         ...data,
@@ -136,6 +152,34 @@ const updateUserQuery = async (id: string, data: IUpdateUser) => {
         id,
       },
     });
+
+    if (isVerifyEmail) {
+      const templatePath = path.join(
+        __dirname,
+        '../templates',
+        'registrationEmail.hbs',
+      );
+      const payload = {
+        userId: user.id,
+        email: user.email,
+      };
+      const token = sign(payload, String(API_KEY), { expiresIn: '1h' });
+      const urlVerify = `${process.env.FRONTEND_URL}/verify?token=${token}`;
+      const templateSource = fs.readFileSync(templatePath, 'utf-8');
+
+      const compiledTemplate = handlebars.compile(templateSource);
+      const html = compiledTemplate({
+        email: user.email,
+        url: urlVerify,
+      });
+
+      await transporter.sendMail({
+        from: 'sender address',
+        to: user.email || '',
+        subject: 'Welcome to Mind Groceries',
+        html,
+      });
+    }
 
     return user;
   } catch (err) {

@@ -6,6 +6,7 @@ export interface FormValues {
   phone: string;
   birthDate: string;
   gender: string;
+  referralCode?: string;
 }
 
 export interface FormProps {
@@ -16,4 +17,5 @@ export interface FormProps {
   initialPhone?: string;
   initialBirthDate?: string;
   initialGender?: string;
+  initialReferralCode?: string;
 }

@@ -6,7 +6,6 @@ import {
   useColorModeValue,
   Heading,
   Text,
-  HStack,
   Avatar,
   AvatarBadge,
   IconButton,
@@ -69,7 +68,6 @@ export default function UserProfile(): JSX.Element {
             <Text fontWeight="bold">Phone Number:</Text>
             <Text>{phoneNumber}</Text>
           </Stack>
-          {/* Add other user information sections here */}
         </Stack>
       </Stack>
     </Flex>

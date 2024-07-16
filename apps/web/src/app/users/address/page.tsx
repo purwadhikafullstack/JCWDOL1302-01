@@ -21,6 +21,7 @@ import {
   IconButton,
   Icon,
 } from '@chakra-ui/react';
+import { AddIcon } from '@chakra-ui/icons';
 import { useRouter } from 'next/navigation';
 import { deleteAddress, getAddresses } from '@/services/address.service';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
@@ -72,6 +73,15 @@ const Page = () => {
       <Card my={10}>
         <CardBody>
           <Flex gap={4} pb={8}>
+            <Button
+              colorScheme="green"
+              px={8}
+              onClick={() => {
+                router.push(`/checkout`);
+              }}
+            >
+              Go to Checkout
+            </Button>
             <Input
               placeholder="Search..."
               value={filters.keyword}
@@ -84,7 +94,9 @@ const Page = () => {
               onClick={() => {
                 router.push(`/users/address/create`);
               }}
+              alignItems="center"
             >
+              <AddIcon fontSize="0.75rem" mr={1.5} />
               Add
             </Button>
           </Flex>

@@ -4,11 +4,8 @@ import {
   Heading,
   Text,
   Flex,
-  Checkbox,
-  CheckboxGroup,
   Radio,
   RadioGroup,
-  Button,
   Stack,
   Image,
 } from '@chakra-ui/react';
@@ -19,17 +16,17 @@ interface EwalletShippingMethod {
 
 const EwalletshippingMethods: EwalletShippingMethod[] = [
   {
-    imageSrc: 'https://shop.rehan.id/assets/images/payment-methods/gopay.png', // Replace with actual image URL
+    imageSrc: 'https://shop.rehan.id/assets/images/payment-methods/gopay.png',
   },
   {
-    imageSrc: 'https://shop.rehan.id/assets/images/payment-methods/ovo.png', // Replace with actual image URL
+    imageSrc: 'https://shop.rehan.id/assets/images/payment-methods/ovo.png',
   },
   {
-    imageSrc: 'https://shop.rehan.id/assets/images/payment-methods/dana.png', // Replace with actual image URL
+    imageSrc: 'https://shop.rehan.id/assets/images/payment-methods/dana.png',
   },
   {
     imageSrc:
-      'https://shop.rehan.id/assets/images/payment-methods/shopeepay.png', // Replace with actual image URL
+      'https://shop.rehan.id/assets/images/payment-methods/shopeepay.png',
   },
 ];
 

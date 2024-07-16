@@ -1,20 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import {
-  Card,
-  CardBody,
-  TableContainer,
-  Box,
-  Input,
-  Select,
-  Text,
-  Button,
-  FormControl,
-  FormLabel,
-  Stack,
-  Textarea,
-} from '@chakra-ui/react';
+import { Card, CardBody, TableContainer, Box, Text } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import {
   getCities,
@@ -22,8 +9,8 @@ import {
   getSubdistricts,
 } from '@/services/shipping.service';
 import { getStoreByID, updateStore } from '@/services/store.service';
-import Map from '@/components/stores/Map';
 import { toast } from 'react-toastify';
+import EditStoreForm from './EditStoreForm';
 
 type Props = { params: { id: string } };
 
@@ -43,6 +30,7 @@ const Page = ({ params: { id } }: Props) => {
     subdistrictName: '',
     longitude: 0,
     latitude: 0,
+    isDefault: false,
   });
 
   const router = useRouter();
@@ -61,6 +49,7 @@ const Page = ({ params: { id } }: Props) => {
         subdistrictName: data.subdistrictName,
         longitude: data.longitude,
         latitude: data.latitude,
+        isDefault: data.isDefault,
       });
     })();
   }, [id]);
@@ -151,6 +140,13 @@ const Page = ({ params: { id } }: Props) => {
     });
   };
 
+  const handleChangeIsDefault = () => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      isDefault: !prevFormData.isDefault,
+    }));
+  }
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -173,132 +169,19 @@ const Page = ({ params: { id } }: Props) => {
       <Card my={10}>
         <CardBody>
           <TableContainer>
-            <form onSubmit={handleSubmit}>
-              <Stack spacing={6} w={'full'} rounded={'xl'} p={10} my={6}>
-                <FormControl id="name" isRequired>
-                  <FormLabel>Store Name</FormLabel>
-                  <Input
-                    name="name"
-                    placeholder="Name"
-                    _placeholder={{ color: 'gray.500' }}
-                    type="text"
-                    value={formData.name}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-                <FormControl id="address" isRequired>
-                  <FormLabel>Address</FormLabel>
-                  <Textarea
-                    name="address"
-                    placeholder="Address"
-                    _placeholder={{ color: 'gray.500' }}
-                    value={formData.address}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-                <FormControl id="province" isRequired>
-                  <FormLabel>Province</FormLabel>
-                  <Select
-                    width="auto"
-                    value={formData.provinceId}
-                    onChange={handleChangeProvince}
-                  >
-                    <option value=""></option>
-                    {provinces?.map((province: any) => (
-                      <option
-                        key={province.province_id}
-                        value={province.province_id}
-                      >
-                        {province.province}
-                      </option>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl id="city" isRequired>
-                  <FormLabel>City</FormLabel>
-                  <Select
-                    width="auto"
-                    value={formData.cityId}
-                    onChange={handleChangeCity}
-                  >
-                    <option value=""></option>
-                    {cities?.map((city) => (
-                      <option
-                        key={city.city_id}
-                        value={city.city_id}
-                      >{`${city.type} ${city.city_name}`}</option>
-                    ))}
-                  </Select>
-                </FormControl>
-                <FormControl id="subdistrict" isRequired>
-                  <FormLabel>Subdistrict</FormLabel>
-                  <Select
-                    width="auto"
-                    value={formData.subdistrictId}
-                    onChange={handleChangeSubdistrict}
-                  >
-                    <option value=""></option>
-                    {subdistricts?.map((subdistrict) => (
-                      <option
-                        key={subdistrict.subdistrict_id}
-                        value={subdistrict.subdistrict_id}
-                      >
-                        {subdistrict.subdistrict_name}
-                      </option>
-                    ))}
-                  </Select>
-                </FormControl>
-                <Map handleChangeLonglat={handleChangeLonglat} />
-                <FormControl id="longitude">
-                  <FormLabel>Longitude</FormLabel>
-                  <Input
-                    name="longitude"
-                    placeholder="Longitude"
-                    _placeholder={{ color: 'gray.500' }}
-                    type="text"
-                    value={formData.longitude}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-                <FormControl id="latitude">
-                  <FormLabel>Latitude</FormLabel>
-                  <Input
-                    name="latitude"
-                    placeholder="Latitude"
-                    _placeholder={{ color: 'gray.500' }}
-                    type="text"
-                    value={formData.latitude}
-                    onChange={handleChange}
-                  />
-                </FormControl>
-                <Stack spacing={6} direction={['column', 'row']}>
-                  <Button
-                    onClick={() => {
-                      router.push('/admin/stores');
-                    }}
-                    bg={'red.400'}
-                    color={'white'}
-                    w="full"
-                    _hover={{
-                      bg: 'red.500',
-                    }}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    type="submit"
-                    bg={'blue.400'}
-                    color={'white'}
-                    w="full"
-                    _hover={{
-                      bg: 'blue.500',
-                    }}
-                  >
-                    Update
-                  </Button>
-                </Stack>
-              </Stack>
-            </form>
+            <EditStoreForm
+              formData={formData}
+              handleChange={handleChange}
+              handleSubmit={handleSubmit}
+              handleChangeProvince={handleChangeProvince}
+              handleChangeCity={handleChangeCity}
+              handleChangeSubdistrict={handleChangeSubdistrict}
+              handleChangeIsDefault={handleChangeIsDefault}
+              provinces={provinces}
+              cities={cities}
+              subdistricts={subdistricts}
+              handleChangeLonglat={handleChangeLonglat}
+            />
           </TableContainer>
         </CardBody>
       </Card>

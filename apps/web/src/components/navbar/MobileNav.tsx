@@ -8,9 +8,9 @@ import {
   Collapse,
 } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
-import { NAV_ITEMS } from './DesktopNav';
-import { NavItem } from './Navbar';
 import Link from 'next/link';
+import { NAV_ITEMS } from "@/constants/navbar.constant";
+import { NavItem } from "@/interface/navbar.interface";
 
 const MobileNav = () => {
   return (
@@ -32,19 +32,23 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
   return (
     <Stack spacing={4} onClick={children && onToggle}>
       <Flex
-        py={2}
+        py={5}
         as={Link}
         href={href ?? '#'}
         justify={'space-between'}
-        align={'center'}
         _hover={{
-          textDecoration: 'none',
+          transform: 'translateY(-2px)',
+          bgColor: 'gray.100',
         }}
+        mt={2}
+        pl={4}
+        borderLeft={3}
+        borderStyle={'solid'}
+        borderColor={useColorModeValue('green', 'green')}
+        align={'start'}
+        alignItems="center"
       >
-        <Text
-          fontWeight={600}
-          color={useColorModeValue('gray.600', 'gray.200')}
-        >
+        <Text fontWeight={600} color={'black'}>
           {label}
         </Text>
         {children && (

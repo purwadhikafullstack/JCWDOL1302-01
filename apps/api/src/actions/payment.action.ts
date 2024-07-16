@@ -10,6 +10,7 @@ import path from 'path';
 import fs from 'fs';
 import * as handlebars from 'handlebars';
 import { transporter } from '../helpers/nodemailer';
+import { ORDER_STATUS } from '@/constants/order.constant';
 
 const prisma = new PrismaClient();
 
@@ -36,7 +37,7 @@ const createPaymentAction = async (orderId: string) => {
           'paymentReminder.hbs',
         );
 
-        const url = `http://localhost:3000/users/orders/confirmation/${order.id}`;
+        const url = `${process.env.FRONTEND_URL}/users/orders/confirmation/${order.id}`;
 
         const templateSource = fs.readFileSync(templatePath, 'utf-8');
 
@@ -77,6 +78,77 @@ const updatePaymentStatusAction = async (
 ): Promise<Order> => {
   try {
     const order = await updatePaymentStatusQuery(orderId, orderStatus);
+    if (
+      order.paymentMethod === 'BANK' &&
+      orderStatus === ORDER_STATUS.menungguPembayaran
+    ) {
+      try {
+        const user = await prisma.user.findUnique({
+          where: {
+            id: order.userId,
+          },
+        });
+
+        const templatePath = path.join(
+          __dirname,
+          '../templates',
+          'paymentFailed.hbs',
+        );
+
+        const templateSource = fs.readFileSync(templatePath, 'utf-8');
+
+        const compiledTemplate = handlebars.compile(templateSource);
+
+        const html = compiledTemplate({
+          email: user?.email,
+        });
+
+        await transporter.sendMail({
+          from: 'sender address',
+          to: user?.email || '',
+          subject: 'Payment Failed',
+          html,
+        });
+      } catch (err) {
+        throw err;
+      }
+    }
+
+    if (
+      order.paymentMethod === 'BANK' &&
+      orderStatus === ORDER_STATUS.diproses
+    ) {
+      try {
+        const user = await prisma.user.findUnique({
+          where: {
+            id: order.userId,
+          },
+        });
+
+        const templatePath = path.join(
+          __dirname,
+          '../templates',
+          'paymentSuccess.hbs',
+        );
+
+        const templateSource = fs.readFileSync(templatePath, 'utf-8');
+
+        const compiledTemplate = handlebars.compile(templateSource);
+
+        const html = compiledTemplate({
+          email: user?.email,
+        });
+
+        await transporter.sendMail({
+          from: 'sender address',
+          to: user?.email || '',
+          subject: 'Payment Success',
+          html,
+        });
+      } catch (err) {
+        throw err;
+      }
+    }
     return order;
   } catch (err) {
     throw err;

@@ -54,7 +54,6 @@ export const confirmPayment = async (orderId: string, formData: FormData) => {
     const order = data?.data;
     return order;
   } catch (err) {
-    console.log(err);
-    toast.error('Confirm payment failed');
+    console.error(err);
   }
 };

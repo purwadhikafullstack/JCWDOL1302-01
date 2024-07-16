@@ -3,6 +3,7 @@ import { MidtransClient } from 'midtrans-node-client';
 import { CURRENCY, FAILURE_REDIRECT_URL, PAYMENT_DESCRIPTION, PAYMENT_PRODUCTION, SHOULD_SEND_EMAIL, SUCCESS_REDIRECT_URL } from "@/constants/payment.constant";
 import { PrismaClient, Order } from "@prisma/client";
 import { ORDER_STATUS } from "@/constants/order.constant";
+import { returnOrderStocksQuery } from "./stock.query";
 
 const prisma = new PrismaClient();
 
@@ -63,15 +64,29 @@ const createMidtransTransactionQuery = async (order: any) => {
 
 const updatePaymentStatusQuery = async (orderId: string, orderStatus: string): Promise<Order> => {
   try {
+    let data: any = {
+      orderStatus,
+    }
+
+    if (orderStatus === ORDER_STATUS.diproses) {
+      data = {
+        ...data,
+        paymentDate: new Date(),
+      }
+    }
+
     const order = await prisma.order.update({
       data: {
-        orderStatus,
-        paymentDate: orderStatus === ORDER_STATUS.diproses ? new Date() : null,
+        ...data,
       },
       where: {
         id: orderId
       }
     });
+
+    if (orderStatus === ORDER_STATUS.dibatalkan) {
+      await returnOrderStocksQuery(order);
+    }
 
     return order;
   } catch (err) {
@@ -88,7 +103,7 @@ const confirmPaymentQuery = async (orderId: string, paymentImage: string): Promi
         paymentDate: new Date(),
       },
       where: {
-        id: orderId
+        id: orderId,
       }
     });
 

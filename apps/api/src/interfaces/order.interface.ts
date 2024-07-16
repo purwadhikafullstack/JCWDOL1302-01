@@ -15,6 +15,7 @@ export interface IOrder {
   paymentMethod: string;
   shippingCourier: string;
   shippingService: string;
+  vouchers?: string[];
   orderItems: IOrderItem[];
 }
 
@@ -33,6 +34,9 @@ export interface IOrderItem {
 export interface IFilterOrder {
   userId?: string;
   storeId?: string;
+  startDate?: string;
+  endDate?: string;
+  orderStatus?: string;
   keyword?: string;
   page?: number;
   size?: number;

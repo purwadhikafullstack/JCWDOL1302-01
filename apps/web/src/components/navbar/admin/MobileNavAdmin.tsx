@@ -1,4 +1,5 @@
 'use client';
+
 import { useAppSelector, useAppDispatch } from '@/lib/hooks';
 import {
   FlexProps,
@@ -23,18 +24,11 @@ import { IconType } from 'react-icons';
 import { FiMenu, FiChevronDown } from 'react-icons/fi';
 import { USER_ROLE } from '@/constants/user.constant';
 
-interface LinkItemProps {
-  name: string;
-  icon: IconType;
-  href: string;
-  key: string;
-}
-
 interface MobileProps extends FlexProps {
   onOpen: () => void;
 }
 const MobileNavAdmin = ({ onOpen, ...rest }: MobileProps) => {
-  const { status, user } = useAppSelector((state) => state.auth);
+  const { user } = useAppSelector((state) => state.auth);
   const router = useRouter();
   const dispatch = useAppDispatch();
 
@@ -91,10 +85,7 @@ const MobileNavAdmin = ({ onOpen, ...rest }: MobileProps) => {
                 </Box>
               </HStack>
             </MenuButton>
-            <MenuList
-            // bg={useColorModeValue('white', 'gray.900')}
-            // borderColor={useColorModeValue('gray.200', 'gray.700')}
-            >
+            <MenuList>
               <MenuItem
                 onClick={() => {
                   router.push(

@@ -1,16 +1,13 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter, notFound } from 'next/navigation';
 import { getProductBySlug } from '@/services/product.service';
-import ProductDetails from '@/components/ProductPage/products/ProductDetails';
-import Loading from "@/components/loading/Loading";
-import NotFoundPage from "@/app/not-found";
+import ProductDetails from '@/components/products/ProductDetails';
+import Loading from '@/components/loading/Loading';
 
 type Props = { params: { slug: string } };
 
 const Page = ({ params: { slug } }: Props) => {
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [product, setProduct] = useState<any>(null);
 

@@ -1,7 +1,6 @@
 'use client';
 
 import {
-  Box,
   Image,
   Link,
   Stack,
@@ -19,12 +18,12 @@ export const CartProductMeta = (props: CartProductMetaProps) => {
   const { name, slug, image } = props;
 
   return (
-    <Stack direction="row" spacing="5" width="50%" alignItems="center">
+    <Stack direction="column" spacing="5" width="50%" alignItems="center">
       <Link href={`/products/${slug}`}>
         <Image
           rounded="lg"
-          width="80px"
-          height="80px"
+          width={'80px'}
+          height={'80px'}
           fit="cover"
           src={image}
           alt={name}
@@ -32,7 +31,9 @@ export const CartProductMeta = (props: CartProductMetaProps) => {
           loading="lazy"
         />
       </Link>
-      <Text fontWeight="medium">{name}</Text>
+      <Text fontWeight="medium" textAlign={'center'}>
+        {name}
+      </Text>
     </Stack>
   );
 };

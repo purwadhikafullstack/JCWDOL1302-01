@@ -1,22 +1,20 @@
 import React from 'react';
-import LoginView from '@/components/signIn/SignIn';
+import SignIn from '@/components/sign-in/SignIn';
 import { authErrorMessages } from "@/config/auth";
 
 // type Props = { searchParams: { callbackUrl?: string, error?: string } };
 
-const Page = () => {
+const SignInPage = () => {
   const searchParams = { callbackUrl: '/', error: null };
   const { callbackUrl = '/', error } = searchParams;
   const authError = error ? authErrorMessages[error] || authErrorMessages.default : null
 
   return (
-    <div>
-      <LoginView
-        callbackUrl={callbackUrl}
-        authError={authError}
-      />
-    </div>
+    <SignIn
+      callbackUrl={callbackUrl}
+      authError={authError}
+    />
   );
 };
 
-export default Page;
+export default SignInPage;

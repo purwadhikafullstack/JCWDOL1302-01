@@ -40,7 +40,7 @@ const registerQuery = async (data: RegisterAuth): Promise<User> => {
           email: user.email,
         };
         const token = sign(payload, String(API_KEY), { expiresIn: '1h' });
-        const urlVerify = `http://localhost:3000/verify?token=${token}`;
+        const urlVerify = `${process.env.FRONTEND_URL}/verify?token=${token}`;
         const templateSource = fs.readFileSync(templatePath, 'utf-8');
 
         const compiledTemplate = handlebars.compile(templateSource);
@@ -128,7 +128,7 @@ const forgotPasswordQuery = async (email: string): Promise<User> => {
           email: user.email,
         };
         const token = sign(payload, String(API_KEY), { expiresIn: '1h' });
-        const urlReset = `http://localhost:3000/reset-password?token=${token}`;
+        const urlReset = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
         const templateSource = fs.readFileSync(templatePath, 'utf-8');
 
         const compiledTemplate = handlebars.compile(templateSource);

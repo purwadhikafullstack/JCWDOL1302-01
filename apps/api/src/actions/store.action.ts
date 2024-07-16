@@ -22,7 +22,7 @@ import {
   IUserStore,
 } from '../interfaces/store.interface';
 import haversine from 'haversine';
-import { MAX_STORE_DISTANCE_IN_KM } from "@/constants/store.constant";
+import { MAX_STORE_DISTANCE_IN_KM } from '@/constants/store.constant';
 
 const getStoresAction = async (
   filters: IFilterStore,
@@ -51,7 +51,11 @@ const getDistanceStoresAction = async (userLocation: IUserLocation) => {
   try {
     const { stores } = await getStoresQuery({});
 
-    let distanceStores = stores.map(store => {
+    if (!userLocation.longitude || !userLocation.latitude) {
+      return stores;
+    }
+
+    let distanceStores = stores.map((store) => {
       const distance =
         userLocation.longitude &&
           userLocation.latitude &&
@@ -71,13 +75,50 @@ const getDistanceStoresAction = async (userLocation: IUserLocation) => {
       return { ...store, distance };
     });
 
-    distanceStores = distanceStores.filter(store => store.distance && store.distance <= MAX_STORE_DISTANCE_IN_KM);
+    distanceStores = distanceStores.filter(
+      (store) => store.distance && store.distance <= MAX_STORE_DISTANCE_IN_KM,
+    );
 
     distanceStores = distanceStores.sort(
       (a, b) => (a.distance as number) - (b.distance as number),
     );
 
     return distanceStores;
+  } catch (err) {
+    throw err;
+  }
+};
+
+const getNearestStoreAction = async (userLocation: IUserLocation) => {
+  try {
+    if (!userLocation.longitude || !userLocation.latitude) return null;
+
+    const { stores } = await getStoresQuery({});
+
+    let nearestdistance = null;
+    let nearestStore = null;
+
+    for (const store of stores) {
+      if (store.longitude && store.latitude) {
+        const distance = haversine(
+          {
+            longitude: userLocation.longitude,
+            latitude: userLocation.latitude,
+          },
+          {
+            longitude: store.longitude,
+            latitude: store.latitude,
+          },
+        );
+
+        if (nearestdistance === null || distance < nearestdistance) {
+          nearestdistance = distance;
+          nearestStore = store;
+        }
+      }
+    }
+
+    return nearestStore;
   } catch (err) {
     throw err;
   }
@@ -194,6 +235,7 @@ export {
   getStoresAction,
   getStoreByIDAction,
   getDistanceStoresAction,
+  getNearestStoreAction,
   createStoreAction,
   updateStoreAction,
   deleteStoreAction,

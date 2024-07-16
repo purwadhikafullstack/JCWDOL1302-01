@@ -1,5 +1,6 @@
 import { IVoucher } from "@/interfaces/voucher.interface";
 import { PrismaClient, UserVoucher } from '@prisma/client';
+import { addMonths } from "date-fns";
 
 const prisma = new PrismaClient();
 
@@ -13,6 +14,17 @@ const getVouchersByUserIDQuery = async (
       },
       where: {
         userId,
+        isUsed: false,
+        OR: [
+          {
+            expiredDate: {
+              lt: new Date(),
+            },
+          },
+          {
+            expiredDate: null,
+          },
+        ]
       },
     });
 
@@ -30,7 +42,9 @@ const createVoucherQuery = async (
       try {
         const voucher = await prisma.userVoucher.create({
           data: {
-            ...data
+            ...data,
+            createdDate: new Date(),
+            expiredDate: addMonths(new Date(), 3),
           },
         });
 

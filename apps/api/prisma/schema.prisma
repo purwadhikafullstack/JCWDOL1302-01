@@ -81,7 +81,6 @@ model User {
   updatedProducts       Product[]      @relation("UpdatedProducts")
   userAddress           UserAddress[]
   createdStockHistories StockHistory[] @relation("CreatedStockHistories")
-  updatedStockHistories StockHistory[] @relation("UpdatedStockHistories")
   carts                 Cart[]
   orders                Order[]
   accounts              Account[]
@@ -124,6 +123,7 @@ model Store {
   postalCode      String?     @map(name: "postal_code")
   longitude       Float?
   latitude        Float?
+  isDefault       Boolean     @default(false) @map(name: "is_default")
   createdDate     DateTime    @default(now()) @map(name: "created_date")
   updatedDate     DateTime    @updatedAt @map(name: "updated_date")
   stocks          Stock[]
@@ -212,9 +212,6 @@ model StockHistory {
   createdByUser User?    @relation("CreatedStockHistories", fields: [createdBy], references: [id])
   createdBy     String?  @map(name: "created_by")
   createdDate   DateTime @default(now()) @map(name: "created_date")
-  updatedByUser User?    @relation("UpdatedStockHistories", fields: [updatedBy], references: [id])
-  updatedBy     String?  @map(name: "updated_by")
-  updatedDate   DateTime @updatedAt @map(name: "updated_date")
 
   @@map(name: "stock_histories")
 }

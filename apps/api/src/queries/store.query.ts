@@ -86,6 +86,19 @@ const createStoreQuery = async (storeData: IStore): Promise<Store> => {
           },
         });
 
+        if (Boolean(storeData.isDefault)) {
+          await prisma.store.updateMany({
+            data: {
+              isDefault: false,
+            },
+            where: {
+              id: {
+                not: store.id,
+              }
+            }
+          });
+        }
+
         return store;
       } catch (err) {
         throw err;
@@ -111,6 +124,19 @@ const updateStoreQuery = async (
         id,
       },
     });
+
+    if (Boolean(storeData.isDefault)) {
+      await prisma.store.updateMany({
+        data: {
+          isDefault: false,
+        },
+        where: {
+          id: {
+            not: store.id,
+          }
+        }
+      });
+    }
 
     return store;
   } catch (err) {

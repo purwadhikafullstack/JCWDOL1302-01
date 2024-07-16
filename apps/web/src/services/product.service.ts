@@ -19,6 +19,22 @@ export const getProducts = async ({
   }
 };
 
+export const getAvailableProductsByStoreID = async ({
+  storeId = '',
+  category = '',
+  keyword = '',
+  page = 1,
+  size = 10,
+}: IFilterProduct) => {
+  try {
+    const { data } = await instance.get(`/products/store?storeId=${storeId}&keyword=${keyword}&page=${page}&size=${size}&category=${category}`);
+    const products = data?.data;
+    return products;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export const getProductByID = async (id: string) => {
   try {
     const { data } = await instance.get(`/products/${id}`);
@@ -101,8 +117,7 @@ export const createProductImage = async (formData: any) => {
     const productImage = data?.data;
     return productImage;
   } catch (err) {
-    console.log(err);
-    toast.error('Upload product image failed');
+    console.error(err);
   }
 };
 

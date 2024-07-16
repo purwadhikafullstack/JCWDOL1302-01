@@ -7,16 +7,22 @@ import { Discount, PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-const getDiscountQuery = async (
+const getDiscountsQuery = async (
   filters: IFilterDiscount,
 ): Promise<IResultDiscount> => {
   try {
-    const { keyword = '', page = 1, size = 1000 } = filters;
+    const { storeId = '', keyword = '', page = 1, size = 1000 } = filters;
 
     const discounts = await prisma.discount.findMany({
+      include: {
+        product: true,
+      },
       where: {
         type: {
           contains: keyword,
+        },
+        storeId: {
+          contains: storeId,
         },
       },
       skip: Number(page) > 0 ? (Number(page) - 1) * Number(size) : 0,
@@ -30,6 +36,9 @@ const getDiscountQuery = async (
       where: {
         type: {
           contains: keyword,
+        },
+        storeId: {
+          contains: storeId,
         },
       },
     });
@@ -106,7 +115,10 @@ const getDiscountByIDQuery = async (id: string): Promise<Discount | null> => {
   }
 };
 
-const getDiscountByProductIdAndStoreIdQuery = async (productId: string, storeId: string): Promise<Discount | null> => {
+const getDiscountByProductIdAndStoreIdQuery = async (
+  productId: string,
+  storeId: string,
+): Promise<Discount | null> => {
   try {
     const discount = await prisma.discount.findFirst({
       where: {
@@ -156,11 +168,26 @@ const updateDiscountQuery = async (
   }
 };
 
+const deleteDiscountQuery = async (id: string): Promise<Discount> => {
+  try {
+    const discount = await prisma.discount.delete({
+      where: {
+        id,
+      },
+    });
+
+    return discount;
+  } catch (err) {
+    throw err;
+  }
+};
+
 export {
+  deleteDiscountQuery,
   updateDiscountQuery,
   getDiscountByIDQuery,
   createDiscountQuery,
-  getDiscountQuery,
+  getDiscountsQuery,
   getDiscountsByStoreIDQuery,
   getDiscountByProductIdAndStoreIdQuery,
 };

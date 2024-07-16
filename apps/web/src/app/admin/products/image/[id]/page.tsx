@@ -15,13 +15,29 @@ import {
   Stack,
   Textarea,
   Grid,
+  AvatarBadge,
+  IconButton,
+  Badge,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { createProductImage, getProductByID } from '@/services/product.service';
+import {
+  createProductImage,
+  deleteProductImage,
+  getProductByID,
+} from '@/services/product.service';
 import AuthSuperAdmin from '@/components/auth/AuthSuperAdmin';
 import { toast } from 'react-toastify';
+import { CloseIcon, SmallCloseIcon } from '@chakra-ui/icons';
 
 type Props = { params: { id: string } };
+
+type MyImageProps = {
+  src: string;
+  alt: string;
+  key?: any;
+  borderRadius?: number;
+  icon?: React.ReactElement;
+};
 
 const Page = ({ params: { id } }: Props) => {
   const router = useRouter();
@@ -33,6 +49,23 @@ const Page = ({ params: { id } }: Props) => {
       setProduct(data);
     })();
   }, [id]);
+
+  const handleDelete = async (imageId: string) => {
+    if (!confirm(`Are you sure want to delete this image?`) || !imageId) return;
+
+    try {
+      const productImage = await deleteProductImage(imageId);
+      if (!productImage) throw new Error('Delete product image failed!');
+      toast.success('Delete product image success');
+
+      const data = await getProductByID(id);
+      setProduct(data);
+      router.refresh();
+    } catch (err) {
+      console.error(err);
+      toast.error('Delete product image failed');
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -46,14 +79,15 @@ const Page = ({ params: { id } }: Props) => {
       const productImage = await createProductImage(formData);
       if (!productImage) throw new Error('Upload product image failed!');
       toast.success('Upload product image success');
-      // router.push(`/admin/products/image/${id}`)
 
       const data = await getProductByID(id);
       setProduct(data);
       router.refresh();
     } catch (err) {
       console.error(err);
-      toast.error('Upload product image failed');
+      toast.error(
+        'Upload product image failed! Please upload file with extension .jpg, .jpeg, .png, .gif and maximum size 1MB!',
+      );
     }
   };
 
@@ -93,12 +127,40 @@ const Page = ({ params: { id } }: Props) => {
             </form>
             <TableContainer>
               <Grid templateColumns="repeat(4, 1fr)" gap={6}>
-                {product?.productImages.map((item: any) => (
-                  <Image
-                    src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/products/${item.image}`}
-                    alt=""
-                    key={item.id}
-                  />
+                {product?.productImages?.map((item: any, index: number) => (
+                  <Stack
+                    key={index}
+                    direction={['column', 'row']}
+                    spacing={6}
+                    position="relative"
+                    overflow="visible"
+                  >
+                    <Image
+                      src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/products/${item.image}`}
+                      alt=""
+                      key={item.id}
+                      borderRadius={25}
+                    />
+                    <Badge
+                      size="sm"
+                      rounded="full"
+                      position="absolute"
+                      top={0}
+                      right={0}
+                      colorScheme="red"
+                      variant="solid"
+                      px={2}
+                      py={1}
+                      border={1}
+                      borderStyle="solid"
+                      borderColor="red"
+                      cursor="pointer"
+                      _hover={{ backgroundColor: 'white', color: 'red' }}
+                      onClick={() => handleDelete(item.id)}
+                    >
+                      <SmallCloseIcon />
+                    </Badge>
+                  </Stack>
                 ))}
                 {/* <GridItem w='100%' h='10' bg='blue.500' /> */}
               </Grid>

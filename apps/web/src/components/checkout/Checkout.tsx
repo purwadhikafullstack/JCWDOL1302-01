@@ -1,25 +1,18 @@
 'use client';
 
-import {
-  Box,
-  Divider,
-  Flex,
-  HStack,
-  Heading,
-  Stack,
-} from '@chakra-ui/react';
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { Box, Divider, Flex, HStack, Heading, Stack } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { CheckoutSummary } from './CheckoutSummary';
-import { useAppSelector, useAppDispatch } from "@/lib/hooks";
-import Link from "next/link";
+import { useAppSelector, useAppDispatch } from '@/lib/hooks';
+import Link from 'next/link';
 import PaymentMethod from './PaymentMethod';
-import ShippingAddress from "./ShippingAddress";
+import ShippingAddress from './ShippingAddress';
 import ShippingMethod from './ShippingMethod';
-import { getStoreByID } from "@/services/store.service";
-import { getCouriers } from "@/services/shipping.service";
-import { updateCartOriginState } from "@/lib/features/cart/cartSlice";
-import VoucherList from "./VoucherList";
+import { getStoreByID } from '@/services/store.service';
+import { getCouriers } from '@/services/shipping.service';
+import { updateCartOriginState } from '@/lib/features/cart/cartSlice';
+import VoucherList from './VoucherList';
 
 const Checkout = () => {
   const router = useRouter();
@@ -29,17 +22,13 @@ const Checkout = () => {
   const [store, setStore] = useState<any>(null);
   const [couriers, setCouriers] = useState<any[]>([]);
 
-  // useEffect(() => {
-  //   if (!cart.itemsCount) router.push("/cart");
-  // }, [cart.itemsCount, router]);
-
   useEffect(() => {
     (async () => {
       if (!user.id || !cart.storeId) return;
       const data = await getStoreByID(cart.storeId);
       setStore(data);
       dispatch(updateCartOriginState({ origin: data?.subdistrictId }));
-    })()
+    })();
   }, [dispatch, user.id, cart.storeId]);
 
   useEffect(() => {
@@ -47,7 +36,7 @@ const Checkout = () => {
       if (!cart.origin || !cart.destination) return;
       const data = await getCouriers(cart.origin, cart.destination);
       setCouriers(data);
-    })()
+    })();
   }, [cart.origin, cart.destination]);
 
   return (
@@ -89,10 +78,7 @@ const Checkout = () => {
           <CheckoutSummary />
           <HStack fontWeight="semibold">
             <p>or</p>
-            <Link
-              style={{ color: "rgb(49, 130, 206)" }}
-              href="/cart"
-            >
+            <Link style={{ color: 'rgb(49, 130, 206)' }} href="/cart">
               Back to Cart
             </Link>
           </HStack>
@@ -100,6 +86,6 @@ const Checkout = () => {
       </Stack>
     </Box>
   );
-}
+};
 
 export default Checkout;

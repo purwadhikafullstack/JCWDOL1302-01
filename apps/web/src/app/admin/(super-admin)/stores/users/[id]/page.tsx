@@ -19,7 +19,7 @@ import {
   getUnassignedUsersByStoreID,
   createUserStore,
 } from '@/services/store.service';
-import AssignedUsers from '@/components/AssignedUsers';
+import AssignedUsers from '@/components/stores/AssignedUsers';
 import { toast } from 'react-toastify';
 
 type Props = { params: { id: string } };

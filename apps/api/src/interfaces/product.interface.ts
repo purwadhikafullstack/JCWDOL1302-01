@@ -21,6 +21,7 @@ export interface IFilterProduct {
   keyword?: string;
   page?: number;
   size?: number;
+  storeId?: string;
 }
 
 export interface IResultProduct {
