@@ -30,7 +30,7 @@ export default function Hero() {
     base: '30%',
     sm: '10px',
     md: '10px',
-    lg: '20px',
+    lg: '160px',
   });
 
   const cards = [
@@ -68,9 +68,9 @@ export default function Hero() {
       <Box display={{ base: 'none', sm: 'block', md: 'none', xs: 'none' }}>
         <IconButton
           aria-label="left-arrow"
-          colorScheme="gray"
+          colorScheme="green"
           variant={'outline'}
-          _hover={{ bgColor: 'gray' }}
+          _hover={{ bgColor: 'white' }}
           borderRadius="full"
           position="absolute"
           left={side}
@@ -79,13 +79,13 @@ export default function Hero() {
           zIndex={2}
           onClick={() => slider?.slickPrev()}
         >
-          <BiLeftArrowAlt color="white" />
+          <BiLeftArrowAlt color="green" />
         </IconButton>
         <IconButton
           aria-label="right-arrow"
-          colorScheme="gray"
+          colorScheme="green"
           variant={'outline'}
-          _hover={{ bgColor: 'gray' }}
+          _hover={{ bgColor: 'white' }}
           borderRadius="full"
           position="absolute"
           right={side}
@@ -94,7 +94,7 @@ export default function Hero() {
           zIndex={99}
           onClick={() => slider?.slickNext()}
         >
-          <BiRightArrowAlt color="white" />
+          <BiRightArrowAlt color="green" />
         </IconButton>
       </Box>
       <Slider {...settings} ref={(slider) => setSlider(slider)}>
@@ -105,8 +105,9 @@ export default function Hero() {
             position="relative"
             backgroundPosition="center"
             backgroundRepeat="no-repeat"
-            backgroundSize="cover"
+            backgroundSize="contain"
             backgroundImage={`url(${card.image})`}
+            bgPos={'top'}
           >
             <Link href={card.link}></Link>
           </Box>
