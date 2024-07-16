@@ -1,14 +1,7 @@
 'use client';
 
 import React from 'react';
-import {
-  Box,
-  Stack,
-  Heading,
-  Container,
-  IconButton,
-  useBreakpointValue,
-} from '@chakra-ui/react';
+import { Box, IconButton, useBreakpointValue } from '@chakra-ui/react';
 import Slider from 'react-slick';
 import Link from 'next/link';
 import { BiLeftArrowAlt, BiRightArrowAlt } from 'react-icons/bi';
@@ -42,18 +35,15 @@ export default function Hero() {
 
   const cards = [
     {
-      title: 'You order? We Deliver!',
-      image: '/assets/images/courier.jpeg',
+      image: '/assets/images/1.png',
       link: '/products',
     },
     {
-      title: '24 / 7, No matter the weather',
-      image: '/assets/images/courier1.jpeg',
+      image: '/assets/images/2.png',
       link: '/products',
     },
     {
-      title: 'Fresh groceries at your door',
-      image: '/assets/images/groceries.jpeg',
+      image: '/assets/images/3.png',
       link: '/products',
     },
   ];
@@ -118,32 +108,7 @@ export default function Hero() {
             backgroundSize="cover"
             backgroundImage={`url(${card.image})`}
           >
-            <Link href={card.link}>
-              <Container size="box.lg" height="600px" position="relative">
-                <Stack
-                  w={'fit'}
-                  maxW={'lg'}
-                  position="absolute"
-                  top={{ base: '15%', sm: '40%' }}
-                  transform="translate(0, -50%)"
-                  bgGradient={'linear(to-b, whiteAlpha.800, transparent)'}
-                  borderRadius={'20'}
-                >
-                  <Heading
-                    fontSize={{ base: 'lg', sm: '4xl' }}
-                    fontWeight={'800'}
-                    color={'mustard'}
-                    textAlign={'center'}
-                    borderRadius={'20'}
-                    p={2}
-                    fontFamily={'Gill sans'}
-                    bgGradient={'linear(to-t, whiteAlpha.800, transparent)'}
-                  >
-                    {card.title}
-                  </Heading>
-                </Stack>
-              </Container>
-            </Link>
+            <Link href={card.link}></Link>
           </Box>
         ))}
       </Slider>

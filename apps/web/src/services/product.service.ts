@@ -27,7 +27,9 @@ export const getAvailableProductsByStoreID = async ({
   size = 10,
 }: IFilterProduct) => {
   try {
-    const { data } = await instance.get(`/products/store?storeId=${storeId}&keyword=${keyword}&page=${page}&size=${size}&category=${category}`);
+    const { data } = await instance.get(
+      `/products/store?storeId=${storeId}&keyword=${keyword}&page=${page}&size=${size}&category=${category}`,
+    );
     const products = data?.data;
     return products;
   } catch (err) {

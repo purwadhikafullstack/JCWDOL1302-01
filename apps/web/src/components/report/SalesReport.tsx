@@ -21,9 +21,9 @@ import {
   getSalesReportTotalCategory,
   getSalesReportTotalProduct,
 } from '@/services/report.service';
-import { getStores } from "@/services/store.service";
-import { useAppSelector } from "@/lib/hooks";
-import { monthLabels } from "@/constants/report.constant";
+import { getStores } from '@/services/store.service';
+import { useAppSelector } from '@/lib/hooks';
+import { monthLabels } from '@/constants/report.constant';
 
 const DashboardSalesReport: React.FC = () => {
   const [filters, setFilters] = useState({
@@ -43,9 +43,9 @@ const DashboardSalesReport: React.FC = () => {
     label: (2024 + index).toString(),
   }));
 
-  const categoryLabels = categoryDatasets.map((item) => item.label);
+  const categoryLabels = categoryDatasets?.map((item) => item.label);
 
-  const productLabels = productDatasets.map((item) => item.label);
+  const productLabels = productDatasets?.map((item) => item.label);
 
   useEffect(() => {
     (async () => {
@@ -55,8 +55,11 @@ const DashboardSalesReport: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (user.role === "store_admin" && user.storeId) {
-      setFilters(prevFilters => ({ ...prevFilters, storeId: user.storeId as string }));
+    if (user.role === 'store_admin' && user.storeId) {
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        storeId: user.storeId as string,
+      }));
     }
   }, [user.role, user.storeId]);
 
@@ -81,12 +84,23 @@ const DashboardSalesReport: React.FC = () => {
 
   return (
     <Box>
-      <Stack flex={'1'} justify={'center'} direction={'row'} spacing={2} mb={10}>
+      <Stack
+        flex={'1'}
+        justify={'center'}
+        direction={'row'}
+        spacing={2}
+        mb={10}
+      >
         <Box>
           <Text fontWeight={500}>Year:</Text>
           <Select
             value={filters.year}
-            onChange={e => setFilters(prevFilters => ({ ...prevFilters, year: e.target.value }))}
+            onChange={(e) =>
+              setFilters((prevFilters) => ({
+                ...prevFilters,
+                year: e.target.value,
+              }))
+            }
           >
             {yearOptions.map((option) => (
               <option key={option.value} value={option.value}>
@@ -95,12 +109,17 @@ const DashboardSalesReport: React.FC = () => {
             ))}
           </Select>
         </Box>
-        {user.role === "super_admin" && (
+        {user.role === 'super_admin' && (
           <Box>
             <Text fontWeight={500}>Store:</Text>
             <Select
               value={filters.storeId}
-              onChange={e => setFilters(prevFilters => ({ ...prevFilters, storeId: e.target.value }))}
+              onChange={(e) =>
+                setFilters((prevFilters) => ({
+                  ...prevFilters,
+                  storeId: e.target.value,
+                }))
+              }
             >
               <option value="">- All Stores -</option>
               {stores?.map((store) => (
@@ -117,29 +136,23 @@ const DashboardSalesReport: React.FC = () => {
       <Grid templateColumns="repeat(auto-fit,minmax(300px,1fr">
         <Grid templateColumns="repeat(auto-fit, minmax(300px, 1fr))" gap={4}>
           <GridItem colSpan={1}>
-            <Box w="full" mb={{ base: 0, lg: "-150px" }}>
+            <Box w="full" mb={{ base: 0, lg: '-150px' }}>
               <Text align="center" mb={5} fontWeight={500}>
                 Laporan Penjualan Per Bulan
               </Text>
               <AspectRatio>
-                <BarChart
-                  labels={monthLabels}
-                  datasets={monthDatasets}
-                />
+                <BarChart labels={monthLabels} datasets={monthDatasets} />
               </AspectRatio>
             </Box>
           </GridItem>
         </Grid>
         <GridItem colSpan={1}>
-          <Box w="full" mb={{ base: 0, lg: "-150px" }}>
+          <Box w="full" mb={{ base: 0, lg: '-150px' }}>
             <Text align="center" mb={5} fontWeight={500}>
               Laporan Penjualan Per Kategori
             </Text>
             <AspectRatio>
-              <BarChart
-                labels={monthLabels}
-                datasets={categoryDatasets}
-              />
+              <BarChart labels={monthLabels} datasets={categoryDatasets} />
             </AspectRatio>
           </Box>
         </GridItem>
@@ -149,10 +162,7 @@ const DashboardSalesReport: React.FC = () => {
               Laporan Penjualan Per Produk
             </Text>
             <AspectRatio ratio={16 / 9}>
-              <LineChart
-                labels={monthLabels}
-                datasets={productDatasets}
-              />
+              <LineChart labels={monthLabels} datasets={productDatasets} />
             </AspectRatio>
           </Box>
         </GridItem>
