@@ -14,7 +14,7 @@ app.use('/public', express.static(path.join(__dirname, 'public')));
 require('./routes')(app);
 app.use(ErrorMiddleware);
 
-// scheduleTask();
+scheduleTask();
 
 app.listen(PORT, () => {
   console.log(`Server started on port ${PORT}`);

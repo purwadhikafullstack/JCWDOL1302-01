@@ -145,7 +145,7 @@ const Page = ({ params: { id } }: Props) => {
       ...prevFormData,
       isDefault: !prevFormData.isDefault,
     }));
-  }
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

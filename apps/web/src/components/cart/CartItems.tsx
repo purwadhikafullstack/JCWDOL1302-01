@@ -64,7 +64,16 @@ export const CartItem = ({ item, handleRemoveCartItem }: Props) => {
           onClick={() => {
             handleRemoveCartItem(item.id);
           }}
-        />
+          bgColor={'red.500'}
+          color={'white'}
+          _hover={{ bgColor: 'red', transform: 'scale(1.1)' }}
+          w={'auto'}
+          p={'2'}
+          fontSize={'sm'}
+          shadow={'lg'}
+        >
+          Remove
+        </CloseButton>
         <CartItemQuantity item={item} />
         <PriceTag
           price={item.price}

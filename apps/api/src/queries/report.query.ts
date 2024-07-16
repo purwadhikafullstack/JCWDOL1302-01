@@ -118,9 +118,8 @@ const getSalesReportPerProductQuery = async (filters: IFilterReport) => {
         data: String(item.total)
           .split('|')
           .map((item) => Number(item)),
-        borderColor: COLORS[index].backgroundColor || COLORS[0].backgroundColor,
-        backgroundColor:
-          COLORS[index].backgroundColor || COLORS[0].backgroundColor,
+        borderColor: index > 19 ? COLORS[0].backgroundColor : COLORS[index].backgroundColor || COLORS[0].backgroundColor,
+        backgroundColor: index > 19 ? COLORS[0].backgroundColor : COLORS[index].backgroundColor || COLORS[0].backgroundColor,
       };
     });
   } catch (err) {
@@ -195,7 +194,7 @@ const getSalesReportPerCategoryQuery = async (filters: IFilterReport) => {
           .split('|')
           .map((item) => Number(item)),
         backgroundColor:
-          COLORS[index].backgroundColor || COLORS[0].backgroundColor,
+        index > 19 ? COLORS[0].backgroundColor : COLORS[index].backgroundColor || COLORS[0].backgroundColor,
       };
     });
   } catch (err) {
@@ -230,8 +229,8 @@ const getSalesReportTotalProductQuery = async (filters: IFilterReport) => {
       {
         label: 'Penjualan',
         data: report.map((item) => Number(item?.total)),
-        backgroundColor: report.map((item, index) => COLORS[index].backgroundColor),
-        borderColor: report.map((item, index) => COLORS[index].borderColor),
+        backgroundColor: report.map((item, index) => index > 19 ? COLORS[0].backgroundColor : COLORS[index].backgroundColor || COLORS[0].backgroundColor),
+        borderColor: report.map((item, index) => index > 19 ? COLORS[0].borderColor : COLORS[index].borderColor || COLORS[0].borderColor),
         borderWidth: 1,
       },
     ];
@@ -268,8 +267,8 @@ const getSalesReportTotalCategoryQuery = async (filters: IFilterReport) => {
       {
         label: 'Penjualan',
         data: report.map((item) => Number(item?.total)),
-        backgroundColor: report.map((item, index) => COLORS[index].backgroundColor),
-        borderColor: report.map((item, index) => COLORS[index].borderColor),
+        backgroundColor: report.map((item, index) => index > 19 ? COLORS[0].backgroundColor : COLORS[index].backgroundColor || COLORS[0].backgroundColor),
+        borderColor: report.map((item, index) => index > 19 ? COLORS[0].borderColor : COLORS[index].borderColor || COLORS[0].borderColor),
         borderWidth: 1,
       },
     ];
@@ -372,9 +371,8 @@ const getStockReportPerMonthQuery = async (filters: IFilterReport) => {
         data: String(item.total)
           .split('|')
           .map((item) => Number(item)),
-        borderColor: COLORS[index].backgroundColor || COLORS[0].backgroundColor,
-        backgroundColor:
-          COLORS[index].backgroundColor || COLORS[0].backgroundColor,
+        borderColor: index > 19 ? COLORS[0].backgroundColor : COLORS[index].backgroundColor || COLORS[0].backgroundColor,
+        backgroundColor: index > 19 ? COLORS[0].backgroundColor : COLORS[index].backgroundColor || COLORS[0].backgroundColor,
       };
     });
   } catch (err) {
