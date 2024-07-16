@@ -22,7 +22,6 @@ const RegisterSchema = Yup.object().shape({
   email: Yup.string()
     .email('Invalid email address format')
     .required('Email is required'),
-  // password: Yup.string().required('Password is required'),
 });
 
 const RegisterView = () => {

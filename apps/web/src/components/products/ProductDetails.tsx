@@ -1,56 +1,30 @@
 'use client';
 
-import { FormatCurrency } from '@/utils/FormatCurrency';
+import ProductForm from './ProductForm';
 import {
   Box,
   Container,
-  Stack,
-  Text,
-  Flex,
-  Button,
-  Heading,
   SimpleGrid,
-  StackDivider,
-  useColorModeValue,
-  FormControl,
-  FormLabel,
-  Select,
-  Input,
-  IconButton,
-  Icon,
-  Badge,
-  Alert,
-  AlertIcon,
-} from '@chakra-ui/react';
-import { FaCartPlus } from 'react-icons/fa';
-import ImageSlider from './ImageSlider';
-import { toast } from 'react-toastify';
-import {
+  ImageSlider,
+  toast,
   getCartByUserID,
   createCartItem,
   resetCartItems,
   updateCart,
-} from '@/services/cart.service';
-import { useAppDispatch, useAppSelector } from '@/lib/hooks';
-import { useEffect, useState } from 'react';
-import { getDistanceStores } from '@/services/store.service';
-import {
+  useAppDispatch,
+  useAppSelector,
+  useEffect,
+  useState,
+  getDistanceStores,
   updateCartItemsState,
   updateCartStoreState,
-} from '@/lib/features/cart/cartSlice';
-import { getStockByProductIdAndStoreId } from '@/services/stock.service';
-import { FiMinus, FiPlus } from 'react-icons/fi';
-import { getDiscountByProductIdAndStoreId } from '@/services/discount.service';
-import { DISCOUNT_TYPE, DISCOUNT_UNIT } from '@/constants/discount.constant';
-import Link from 'next/link';
+} from './imports/import';
 
 type Props = {
   product: any;
 };
 
 export default function ProductDetails({ product }: Props) {
-  const textColor = useColorModeValue('gray.900', 'gray.400');
-  const dividerColor = useColorModeValue('gray.200', 'gray.600');
   const dispatch = useAppDispatch();
   const cart = useAppSelector((state) => state.cart);
   const user = useAppSelector((state) => state.auth.user);
@@ -101,43 +75,6 @@ export default function ProductDetails({ product }: Props) {
     })();
   }, [dispatch, user]);
 
-  useEffect(() => {
-    (async () => {
-      if (!product.id || !cart.storeId) return;
-
-      const dataStock = await getStockByProductIdAndStoreId(
-        product.id,
-        cart.storeId,
-      );
-      setStock(dataStock);
-
-      const dataDiscount = await getDiscountByProductIdAndStoreId(
-        product.id,
-        cart.storeId,
-      );
-      setDiscount(dataDiscount);
-
-      console.log('dataDiscount:', dataDiscount);
-
-      if (dataDiscount) {
-        if (dataDiscount?.type === DISCOUNT_TYPE.productDiscount) {
-          setFormData((prevFormData) => ({
-            ...prevFormData,
-            discount:
-              dataDiscount.unit === DISCOUNT_UNIT.percentage
-                ? Math.round((prevFormData.price * dataDiscount.amount) / 100)
-                : dataDiscount.amount,
-          }));
-        } else if (dataDiscount?.type === DISCOUNT_TYPE.buy1Get1) {
-          setFormData((prevFormData) => ({
-            ...prevFormData,
-            isBuy1Get1: true,
-          }));
-        }
-      }
-    })();
-  }, [product.id, cart.storeId]);
-
   type ChangeEvent =
     | React.ChangeEvent<HTMLInputElement>
     | React.ChangeEvent<HTMLTextAreaElement>
@@ -148,45 +85,6 @@ export default function ProductDetails({ product }: Props) {
       ...prevFormData,
       quantity: 0,
     }));
-  };
-
-  const validateQuantity = () => {
-    if (formData.quantity < 1) {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        quantity: 1,
-      }));
-    } else if (formData.quantity > stock.remainingStock) {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        quantity: stock.remainingStock,
-      }));
-    }
-  };
-
-  const decrementQuantity = () => {
-    if (formData.quantity > 1) {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        quantity: prevFormData.quantity - 1,
-      }));
-    }
-  };
-
-  const incrementQuantity = () => {
-    if (formData.quantity < stock.remainingStock) {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        quantity: prevFormData.quantity + 1,
-      }));
-    }
-  };
-
-  const handleChange = (e: ChangeEvent) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
   };
 
   const handleChangeStore = async (e: ChangeEvent) => {
@@ -255,36 +153,6 @@ export default function ProductDetails({ product }: Props) {
     }
   };
 
-  useEffect(() => {
-    const lastVisitedPage = () => {
-      const lastVisited = localStorage.getItem('lastVisitedPage');
-
-      if (!lastVisited) {
-        const currentPage = window.location.href;
-        localStorage.setItem('lastVisitedPage', currentPage);
-      }
-    };
-
-    localStorage.removeItem('lastVisitedPage');
-
-    lastVisitedPage();
-  }, []);
-
-  useEffect(() => {
-    const lastVisitedPage = () => {
-      const lastVisited = localStorage.getItem('lastVisitedPage');
-
-      if (!lastVisited) {
-        const currentPage = window.location.href;
-        localStorage.setItem('lastVisitedPage', currentPage);
-      }
-    };
-
-    localStorage.removeItem('lastVisitedPage');
-
-    lastVisitedPage();
-  }, []);
-
   return (
     <Container maxW={'7xl'}>
       <SimpleGrid
@@ -297,168 +165,20 @@ export default function ProductDetails({ product }: Props) {
             images={product.productImages?.map((item: any) => item.image)}
           />
         </Box>
-
-        <form onSubmit={handleSubmit}>
-          <Stack spacing={{ base: 6, md: 10 }}>
-            <Box as={'header'}>
-              <Heading
-                lineHeight={1.1}
-                fontWeight={600}
-                fontSize={{ base: '2xl', sm: '4xl', lg: '5xl' }}
-              >
-                {product.name}
-              </Heading>
-            </Box>
-            <Flex
-              direction={{ base: 'column', sm: 'row' }}
-              gap={5}
-              alignItems={{ base: 'start', sm: 'center' }}
-            >
-              {formData.discount > 0 ? (
-                <>
-                  <Flex alignItems="center" gap={5}>
-                    <Text color={textColor} fontWeight={500} fontSize={'2xl'}>
-                      {FormatCurrency(product.price - formData.discount)}
-                    </Text>
-                    <Text
-                      color={'red'}
-                      fontWeight={400}
-                      fontSize={'xl'}
-                      textDecoration={'line-through'}
-                    >
-                      {FormatCurrency(product.price)}
-                    </Text>
-                  </Flex>
-                  <Badge variant="solid" colorScheme="green">
-                    {discount.type === DISCOUNT_TYPE.productDiscount &&
-                    discount.unit === DISCOUNT_UNIT.amount
-                      ? discount.type + ' ' + FormatCurrency(discount.amount)
-                      : discount.type + ' ' + discount.amount + '%'}
-                  </Badge>
-                </>
-              ) : (
-                <Text color={textColor} fontWeight={500} fontSize={'2xl'}>
-                  {FormatCurrency(product.price)}
-                </Text>
-              )}
-              {discount && discount?.type === DISCOUNT_TYPE.buy1Get1 && (
-                <Badge variant="solid" colorScheme="green">
-                  Buy 1 Get 1
-                </Badge>
-              )}
-            </Flex>
-            <Stack
-              spacing={{ base: 4, sm: 6 }}
-              direction={'column'}
-              divider={<StackDivider borderColor={dividerColor} />}
-            >
-              <Text fontSize={'xl'} fontWeight={'300'}>
-                {product.description}
-              </Text>
-              {isAllow && (
-                <Stack spacing={6}>
-                  <FormControl id="province">
-                    <FormLabel>Store</FormLabel>
-                    <Select
-                      value={cart.storeId}
-                      onChange={handleChangeStore}
-                      placeholder="Select Store"
-                    >
-                      {stores?.map((store: any) => (
-                        <option
-                          key={store.id}
-                          value={store.id}
-                        >{store.name + `${store.distance ? (' - ' + parseFloat(store.distance).toFixed(2) + 'km') : ''}`}</option>
-                      ))}
-                    </Select>
-                  </FormControl>
-                  <FormControl id="quantity">
-                    <FormLabel>Quantity</FormLabel>
-                    <Box display="inline-flex" mr={5}>
-                      <IconButton
-                        aria-label="left"
-                        icon={<Icon as={FiMinus} />}
-                        borderRightRadius={0}
-                        onClick={decrementQuantity}
-                        isDisabled={
-                          !stock?.remainingStock || !formData.quantity
-                        }
-                      />
-                      <Input
-                        name="quantity"
-                        placeholder="Quantity"
-                        width={'50%'}
-                        type="number"
-                        borderRadius={0}
-                        value={formData.quantity}
-                        onChange={handleChange}
-                        onBlur={validateQuantity}
-                        isDisabled={!stock?.remainingStock}
-                      />
-                      <IconButton
-                        aria-label="right"
-                        icon={<Icon as={FiPlus} />}
-                        borderLeftRadius={0}
-                        onClick={incrementQuantity}
-                        isDisabled={
-                          !stock?.remainingStock ||
-                          formData.quantity === stock?.remainingStock
-                        }
-                      />
-                    </Box>
-                    {stock?.remainingStock > 0 ? (
-                      <>
-                        <FormLabel display={'inline'}>Stock:</FormLabel>
-                        <Text as={'span'}>{stock.remainingStock}</Text>
-                      </>
-                    ) : (
-                      <FormLabel display={'inline'} color={'red.500'}>
-                        Out of Stock
-                      </FormLabel>
-                    )}
-                  </FormControl>
-                </Stack>
-              )}
-            </Stack>
-            {isAllow ? (
-              <Button
-                rounded={'full'}
-                w={'full'}
-                mt={8}
-                size={'lg'}
-                py={'7'}
-                bg={'green.600'}
-                color={'white'}
-                textTransform={'uppercase'}
-                _hover={{ transform: 'translateY(2px)', boxShadow: 'lg' }}
-                type="submit"
-                isDisabled={!formData.quantity}
-              >
-                <FaCartPlus />
-                <Text as={'span'} ml={5}>
-                  Add to Cart
-                </Text>
-              </Button>
-            ) : (
-              <Alert status="info" borderRadius={5} mt={4}>
-                <AlertIcon />
-                Please login as customer or verify your email address!
-              </Alert>
-            )}
-            <FormControl id="category">
-              <FormLabel display={'inline'}>Category:</FormLabel>
-              <Link href={`/products?category=${product.category.slug}`}>
-                <Text
-                  as={'span'}
-                  color={'green.500'}
-                  _hover={{ textDecoration: 'underline' }}
-                >
-                  {product.category.name}
-                </Text>
-              </Link>
-            </FormControl>
-          </Stack>
-        </form>
+        <ProductForm
+          product={product}
+          stores={stores}
+          stock={stock}
+          cart={cart}
+          isAllow={isAllow}
+          formData={formData}
+          setFormData={setFormData}
+          handleChangeStore={handleChangeStore}
+          handleSubmit={handleSubmit}
+          discount={discount}
+          setStock={setStock}
+          setDiscount={setDiscount}
+        />
       </SimpleGrid>
     </Container>
   );

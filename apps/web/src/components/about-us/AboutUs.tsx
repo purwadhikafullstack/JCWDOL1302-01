@@ -9,6 +9,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import Statistic from './Statistic';
+import { useEffect } from 'react';
 
 const backgroundImageUrl: string =
   'https://niceillustrations.com/wp-content/uploads/2021/03/Successful-Payment-color-800px.png';
@@ -54,6 +55,20 @@ interface TestimonialCardProps {
 
 function TestimonialCard(props: TestimonialCardProps) {
   const { name, role, content, avatar, index } = props;
+  useEffect(() => {
+    const lastVisitedPage = () => {
+      const lastVisited = localStorage.getItem('lastVisitedPage');
+
+      if (!lastVisited) {
+        const currentPage = window.location.href;
+        localStorage.setItem('lastVisitedPage', currentPage);
+      }
+    };
+
+    localStorage.removeItem('lastVisitedPage');
+
+    lastVisitedPage();
+  }, []);
   return (
     <Flex
       boxShadow={'lg'}

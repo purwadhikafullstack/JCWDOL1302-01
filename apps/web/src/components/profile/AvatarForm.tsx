@@ -1,17 +1,12 @@
 "use client";
 
-import { useAppDispatch } from "@/lib/hooks";
-import { SmallCloseIcon } from "@chakra-ui/icons"
-import { Avatar, AvatarBadge, Center, FormControl, IconButton, Input, Stack } from "@chakra-ui/react"
+import { useAppDispatch, useAppSelector } from "@/lib/hooks";
+import { Avatar, Center, FormControl, Input, Stack } from "@chakra-ui/react"
 import { toast } from "react-toastify";
 import { updateAvatar } from '@/lib/features/auth/authSlice';
 
-type Props = {
-  id: string;
-  image?: string;
-}
-
-const AvatarForm = ({ id, image }: Props) => {
+const AvatarForm = () => {
+  const user = useAppSelector((state) => state.auth.user);
   const dispatch = useAppDispatch();
 
   const handleUpdateAvatar = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,7 +20,7 @@ const AvatarForm = ({ id, image }: Props) => {
 
       formData.append('image', file);
 
-      const result = await dispatch(updateAvatar(id, formData));
+      const result = await dispatch(updateAvatar(user.id as string, formData));
       if (!result) throw new Error('Update Avatar Failed');
       toast.success('Update Avatar Success');
     } catch (err) {
@@ -43,18 +38,8 @@ const AvatarForm = ({ id, image }: Props) => {
           <Center>
             <Avatar
               size="xl"
-              src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/avatar/${image}`}
-            >
-              <AvatarBadge
-                as={IconButton}
-                size="sm"
-                rounded="full"
-                top="-10px"
-                colorScheme="red"
-                aria-label="remove Image"
-                icon={<SmallCloseIcon />}
-              />
-            </Avatar>
+              src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/avatar/${user.image}`}
+            />
           </Center>
           <Center w="full">
             <Input

@@ -1,6 +1,5 @@
 import { createSlice, Dispatch, PayloadAction } from '@reduxjs/toolkit';
 import {
-  IUserPassword,
   IUserProfile,
   IUsers,
 } from '@/interface/user.interface';
@@ -12,7 +11,6 @@ import {
   updateCartStoreState,
 } from '../cart/cartSlice';
 import { getCartByUserID } from '@/services/cart.service';
-import { toast } from 'react-toastify';
 
 type User = {
   id?: string;
@@ -27,6 +25,7 @@ type User = {
   longitude?: number;
   latitude?: number;
   storeId?: string;
+  referralCode?: string;
 };
 
 type Status = {
@@ -53,6 +52,7 @@ const initialState: Auth = {
     longitude: undefined,
     latitude: undefined,
     storeId: '',
+    referralCode: '',
   },
   status: {
     isLogin: false,
@@ -77,9 +77,12 @@ export const authSlice = createSlice({
       state.user = user;
       state.status.isLogin = true;
     },
-    updateProfileState: (state: Auth, action: PayloadAction<User>) => {
-      const user = action.payload;
-      state.user = user;
+    updateProfileState: (state: Auth, action: PayloadAction<IUserProfile>) => {
+      if (action.payload.name) state.user.name = action.payload.name;
+      if (action.payload.email) state.user.email = action.payload.email;
+      if (action.payload.phone) state.user.phone = action.payload.phone;
+      if (action.payload.gender) state.user.gender = action.payload.gender;
+      if (action.payload.birthDate) state.user.birthDate = action.payload.birthDate;
     },
     updateAvatarState: (state: Auth, action: PayloadAction<string>) => {
       state.user.image = action.payload;
@@ -113,6 +116,7 @@ export const signIn = (params: IUsers) => async (dispatch: Dispatch) => {
         longitude: user?.longitude,
         latitude: user?.latitude,
         storeId: user?.userStores[0]?.storeId,
+        referralCode: user?.referralCode,
       }),
     );
 
@@ -181,6 +185,7 @@ export const checkToken = (token: string) => async (dispatch: Dispatch) => {
         longitude: user?.longitude,
         latitude: user?.latitude,
         storeId: user?.userStores[0]?.storeId,
+        referralCode: user?.referralCode,
       }),
     );
 

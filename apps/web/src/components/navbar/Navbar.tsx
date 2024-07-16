@@ -4,7 +4,6 @@ import {
   Box,
   Flex,
   IconButton,
-  Button,
   Stack,
   Collapse,
   useColorModeValue,
@@ -31,7 +30,7 @@ import { FiChevronDown, FiShoppingCart } from 'react-icons/fi';
 import { signOut } from '@/lib/features/auth/authSlice';
 import { useRouter } from 'next/navigation';
 import { USER_ROLE } from '@/constants/user.constant';
-import SignInButton from "./SignInButton";
+import SignInButton from './SignInButton';
 
 export default function Navbar() {
   const { isOpen, onToggle } = useDisclosure();
@@ -69,7 +68,7 @@ export default function Navbar() {
                   <HamburgerIcon w={5} h={5} />
                 )
               }
-              variant={'ghost'}
+              variant={'outline'}
               aria-label={'Toggle Navigation'}
             />
           </Flex>
@@ -90,7 +89,11 @@ export default function Navbar() {
                 />
               )}
             </Link>
-            <Flex display={{ base: 'none', md: 'flex' }} m={'auto'}>
+            <Flex
+              display={{ base: 'none', md: 'flex' }}
+              align={'center'}
+              m={'auto'}
+            >
               <DesktopNav />
             </Flex>
           </Flex>

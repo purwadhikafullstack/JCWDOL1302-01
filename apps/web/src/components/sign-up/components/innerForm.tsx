@@ -6,10 +6,12 @@ import {
   Stack,
   Text,
   Divider,
+  Center,
 } from '@chakra-ui/react';
 import { FormikProps, Form, Field } from 'formik';
 import { FormValues } from '@/types';
 import Link from 'next/link';
+import { FcGoogle } from 'react-icons/fc';
 
 export default function InnerForm(props: FormikProps<FormValues>) {
   const { values, errors, touched, handleChange, handleSubmit, isSubmitting } =
@@ -20,10 +22,11 @@ export default function InnerForm(props: FormikProps<FormValues>) {
       <Form onSubmit={handleSubmit}>
         <Stack spacing={4}>
           <FormControl id="email">
-            <FormLabel htmlFor="email">Email </FormLabel>
+            <FormLabel htmlFor="email">Email :</FormLabel>
             <Field
               name="email"
               type="email"
+              placeholder="Email"
               onChange={handleChange}
               value={values.email}
               style={{
@@ -77,6 +80,21 @@ export default function InnerForm(props: FormikProps<FormValues>) {
               Redeem referral code
             </Text>
           </Button>
+          <Center flex={'1'} flexDirection={'column'}>
+            <Button
+              w={'full'}
+              maxW={'md'}
+              variant={'outline'}
+              leftIcon={<FcGoogle />}
+              onClick={() => {
+                // signInNextAuth('google', { callbackUrl });
+              }}
+            >
+              <Center>
+                <Text>Sign Up with Google</Text>
+              </Center>
+            </Button>
+          </Center>
         </Stack>
       </Form>
     </Box>

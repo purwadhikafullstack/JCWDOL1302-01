@@ -56,6 +56,11 @@ export const CheckoutSummary = () => {
       const dataCart = await getCartByUserID(user.id as string);
       const cartItems = dataCart.cartItems;
 
+      const vouchers: string[] = [];
+      if (cart.discountVoucherId) vouchers.push(cart.discountVoucherId);
+      if (cart.shippingVoucherId) vouchers.push(cart.shippingVoucherId);
+      if (cart.referralVoucherId) vouchers.push(cart.referralVoucherId);
+
       const formData = {
         orderNumber: "MIND-" + crypto.randomUUID().split("-")[0],
         userId: user.id,
@@ -71,6 +76,7 @@ export const CheckoutSummary = () => {
         paymentMethod: cart.paymentMethod,
         shippingCourier: cart.shippingCourier,
         shippingService: cart.shippingService,
+        vouchers,
         orderItems: cartItems.map((item: any) => {
           return {
             productId: item.productId,

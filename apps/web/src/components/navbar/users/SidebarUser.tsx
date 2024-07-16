@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import Link from 'next/link';
 import NavItemUser from './NavItemsUser';
-import { USER_LINK_ITEMS } from "@/constants/navbar.constant";
+import { USER_LINK_ITEMS } from '@/constants/navbar.constant';
 
 interface SidebarProps extends BoxProps {
   onClose: () => void;

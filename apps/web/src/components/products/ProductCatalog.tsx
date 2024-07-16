@@ -3,11 +3,10 @@
 import React, { useEffect, useState } from 'react';
 import {
   Box,
-  Button,
   Card,
   CardBody,
+  Center,
   Divider,
-  Flex,
   Grid,
   GridItem,
   Heading,
@@ -20,10 +19,7 @@ import {
 } from '@chakra-ui/react';
 import { FormatCurrency } from '@/utils/FormatCurrency';
 import Link from 'next/link';
-import {
-  getAvailableProductsByStoreID,
-  getProducts,
-} from '@/services/product.service';
+import { getProducts } from '@/services/product.service';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { getCategories } from '@/services/category.service';
 import { useSearchParams } from 'next/navigation';
@@ -40,7 +36,7 @@ const ProductCatalog = () => {
   const [catFilters, setCatFilters] = useState({
     keyword: '',
     page: 1,
-    size: 20,
+    size: 8,
   });
 
   useEffect(() => {
@@ -63,19 +59,21 @@ const ProductCatalog = () => {
 
   useEffect(() => {
     (async () => {
-      const location = JSON.parse(localStorage.getItem('location') || '{}');
-      const storeId = location.storeId;
-      if (storeId) {
-        const result = await getAvailableProductsByStoreID({
-          ...filters,
-          storeId,
-        });
-        setData(result);
-      } else {
-        const result = await getProducts(filters);
-        setData(result);
-      }
+      const result = await getProducts(filters);
+      setData(result);
     })();
+
+    const lastVisitedPage = () => {
+      const lastVisited = localStorage.getItem('lastVisitedPage');
+
+      if (!lastVisited) {
+        const currentPage = window.location.href;
+        localStorage.setItem('lastVisitedPage', currentPage);
+      }
+    };
+    localStorage.removeItem('lastVisitedPage');
+
+    lastVisitedPage();
   }, [filters]);
 
   return (
@@ -110,50 +108,58 @@ const ProductCatalog = () => {
         bg={'teal'}
         bgGradient={'linear(to-r, teal.200, green.500)'}
       >
+        <Center>
         <Grid
-          templateColumns={{ base: 'repeat(1, 2fr)', sm: 'repeat(4, 2fr)' }}
+          templateColumns={{
+            base: 'repeat(1, 1fr)',
+            sm: 'repeat(2, 1fr)',
+            md: 'repeat(3, 1fr)',
+            lg: 'repeat(4, 1fr)',
+          }}
           gap={6}
+          maxWidth={1200}
         >
-          {data.products?.map((product: any, index: number) => (
-            <GridItem w={'full'} flexDirection={'column'} p={5} key={index}>
-              <Card
-                h={'100%'}
-                key={index}
-                maxW="xl"
-                shadow={'xl'}
-                w={'full'}
-                transition={'0.25s all ease-in-out'}
-                _hover={{
-                  transform: 'translateY(-15px)',
-                  boxShadow: 'lg',
-                }}
-                borderRadius={'2xl'}
-              >
-                <CardBody>
-                  <Link href={`/products/${product.slug}`}>
-                    <Image
-                      src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/products/${product.productImages[0]?.image}`}
-                      alt="Green double couch with wooden legs"
-                      borderRadius="2xl"
-                      width={'500px'}
-                      height={'200px'}
-                      fit={'cover'}
-                    />
-                    <Stack mt="3" spacing="3" textAlign={'center'}>
-                      <Heading size="md" noOfLines={4}>
-                        {product.name}
-                      </Heading>
-                      <Text>{product.category.name}</Text>
-                      <Text color="blue.600" fontSize="lg" mt={5} as={'b'}>
-                        {FormatCurrency(product.price)}
-                      </Text>
-                    </Stack>
-                  </Link>
-                </CardBody>
-              </Card>
-            </GridItem>
-          ))}
+            {data.products?.map((product: any, index: number) => (
+              <GridItem w={'full'} flexDirection={'column'} p={5} key={index}>
+                <Card
+                  h={'100%'}
+                  key={index}
+                  maxW="xl"
+                  shadow={'xl'}
+                  w={'full'}
+                  transition={'0.25s all ease-in-out'}
+                  _hover={{
+                    transform: 'translateY(-15px)',
+                    boxShadow: 'lg',
+                  }}
+                  borderRadius={'2xl'}
+                >
+                  <CardBody>
+                    <Link href={`/products/${product.slug}`}>
+                      <Image
+                        src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/products/${product.productImages[0]?.image}`}
+                        alt={product.name}
+                        borderRadius="2xl"
+                        width={'500px'}
+                        height={'200px'}
+                        fit={'cover'}
+                      />
+                      <Stack mt="3" spacing="3" textAlign={'center'}>
+                        <Heading size="md" noOfLines={4}>
+                          {product.name}
+                        </Heading>
+                        <Text>{product.category.name}</Text>
+                        <Text color="blue.600" fontSize="lg" mt={5} as={'b'}>
+                          {FormatCurrency(product.price)}
+                        </Text>
+                      </Stack>
+                    </Link>
+                  </CardBody>
+                </Card>
+              </GridItem>
+            ))}
         </Grid>
+        </Center>
         {data.pages > 1 && (
           <Box pt={4} display="flex" justifyContent="center">
             <Box display="flex">

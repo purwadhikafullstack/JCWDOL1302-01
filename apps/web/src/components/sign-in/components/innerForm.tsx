@@ -30,6 +30,7 @@ export default function InnerForm(props: FormikProps<FormValues>) {
             <Field
               name="email"
               type="email"
+              placeholder="Email"
               onChange={handleChange}
               value={values.email}
               style={{

@@ -1,17 +1,30 @@
-"use client";
+'use client';
 
-import { updateCartItemsState } from "@/lib/features/cart/cartSlice";
-import { useAppDispatch, useAppSelector } from "@/lib/hooks";
-import { createCartItem, getCartByID, getCartByUserID } from "@/services/cart.service";
-import { getStockByProductIdAndStoreId } from "@/services/stock.service";
-import { Box, Flex, FormLabel, Icon, IconButton, Input, Text } from "@chakra-ui/react"
-import React, { useEffect, useState } from 'react'
-import { FiMinus, FiPlus } from "react-icons/fi"
-import { toast } from "react-toastify";
+import { updateCartItemsState } from '@/lib/features/cart/cartSlice';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import {
+  createCartItem,
+  getCartByID,
+  getCartByUserID,
+} from '@/services/cart.service';
+import { getStockByProductIdAndStoreId } from '@/services/stock.service';
+import {
+  Box,
+  Divider,
+  Flex,
+  FormLabel,
+  Icon,
+  IconButton,
+  Input,
+  Text,
+} from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import { FiMinus, FiPlus } from 'react-icons/fi';
+import { toast } from 'react-toastify';
 
 type Props = {
-  item: any
-}
+  item: any;
+};
 
 const CartItemQuantity = ({ item }: Props) => {
   const dispatch = useAppDispatch();
@@ -29,7 +42,10 @@ const CartItemQuantity = ({ item }: Props) => {
     (async () => {
       if (!item.productId || !cart.storeId) return;
 
-      const dataStock = await getStockByProductIdAndStoreId(item.productId, cart.storeId);
+      const dataStock = await getStockByProductIdAndStoreId(
+        item.productId,
+        cart.storeId,
+      );
       setStock(dataStock);
     })();
   }, [item.productId, cart.storeId]);
@@ -40,19 +56,19 @@ const CartItemQuantity = ({ item }: Props) => {
     } else if (formData.quantity > stock?.remainingStock) {
       changeQuantity(stock?.remainingStock);
     }
-  }
+  };
 
   const decrementQuantity = () => {
     if (formData.quantity > 1) {
       changeQuantity(formData.quantity - 1);
     }
-  }
+  };
 
   const incrementQuantity = () => {
     if (formData.quantity < stock?.remainingStock) {
       changeQuantity(formData.quantity + 1);
     }
-  }
+  };
 
   const changeQuantity = async (quantity: number) => {
     try {
@@ -73,15 +89,15 @@ const CartItemQuantity = ({ item }: Props) => {
         );
       }
 
-      setFormData(prevFormData => ({
+      setFormData((prevFormData) => ({
         ...prevFormData,
-        quantity
+        quantity,
       }));
     } catch (err) {
       console.error(err);
       toast.error('Update cart item failed');
     }
-  }
+  };
 
   return (
     <Flex direction="column" textAlign="center" gap={2}>
@@ -96,28 +112,33 @@ const CartItemQuantity = ({ item }: Props) => {
         <Input
           name="quantity"
           placeholder="Quantity"
-          width={'20%'}
+          width={{ base: '22%', sm: '20%' }}
           type="number"
           borderRadius={0}
           value={formData.quantity}
-          onChange={e => changeQuantity(Number(e.target.value))}
+          onChange={(e) => changeQuantity(Number(e.target.value))}
           onBlur={validateQuantity}
           isDisabled={!stock?.remainingStock}
+          textAlign={'center'}
         />
         <IconButton
           aria-label="right"
           icon={<Icon as={FiPlus} />}
           borderLeftRadius={0}
           onClick={incrementQuantity}
-          isDisabled={!stock?.remainingStock || formData.quantity === stock?.remainingStock}
+          isDisabled={
+            !stock?.remainingStock ||
+            formData.quantity === stock?.remainingStock
+          }
         />
       </Box>
+
       <Box>
         <FormLabel display={'inline'}>Stock:</FormLabel>
         <Text as={'span'}>{stock?.remainingStock}</Text>
       </Box>
     </Flex>
-  )
-}
+  );
+};
 
-export default CartItemQuantity
+export default CartItemQuantity;

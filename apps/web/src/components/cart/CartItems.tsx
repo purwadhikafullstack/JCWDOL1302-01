@@ -16,6 +16,10 @@ export const CartItem = ({ item, handleRemoveCartItem }: Props) => {
       direction={{ base: 'column', md: 'row' }}
       justify="space-between"
       align="center"
+      borderWidth="1px"
+      rounded="lg"
+      padding="4"
+      width="full"
     >
       <CartProductMeta
         name={item.name}
@@ -52,6 +56,8 @@ export const CartItem = ({ item, handleRemoveCartItem }: Props) => {
         width="full"
         justify="space-between"
         display={{ base: 'flex', md: 'none' }}
+        direction={'column-reverse'}
+        gap={2}
       >
         <CloseButton
           aria-label={`Delete ${name} from cart`}

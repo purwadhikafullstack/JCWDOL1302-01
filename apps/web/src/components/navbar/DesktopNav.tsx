@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 import DesktopSubNav from './DesktopSubNav';
 import Link from 'next/link';
-import { NAV_ITEMS } from "@/constants/navbar.constant";
+import { NAV_ITEMS } from '@/constants/navbar.constant';
 
 const DesktopNav = () => {
   const linkColor = useColorModeValue('gray.600', 'gray.200');
@@ -17,9 +17,9 @@ const DesktopNav = () => {
   const popoverContentBgColor = useColorModeValue('white', 'gray.800');
 
   return (
-    <Stack direction={'row'} spacing={4} ml={28}>
+    <Stack direction={'row'} spacing={4}>
       {NAV_ITEMS.map((navItem) => (
-        <Box key={navItem.label}>
+        <Box key={navItem.label} _hover={{ borderBottom: '1px solid #000' }}>
           <Popover trigger={'hover'} placement={'bottom-start'}>
             <PopoverTrigger>
               <Link href={navItem.href ?? '#'}>

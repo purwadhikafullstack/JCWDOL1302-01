@@ -76,6 +76,20 @@ const createAddressQuery = async (addressData: IAddress): Promise<UserAddress> =
           }
         });
 
+        if (Boolean(addressData.isDefault)) {
+          await prisma.userAddress.updateMany({
+            data: {
+              isDefault: false,
+            },
+            where: {
+              userId: addressData.userId,
+              id: {
+                not: address.id,
+              }
+            }
+          });
+        }
+
         return address;
       } catch (err) {
         throw err;
@@ -101,6 +115,20 @@ const updateAddressQuery = async (
         id
       }
     });
+
+    if (Boolean(addressData.isDefault)) {
+      await prisma.userAddress.updateMany({
+        data: {
+          isDefault: false,
+        },
+        where: {
+          userId: addressData.userId,
+          id: {
+            not: address.id,
+          }
+        }
+      });
+    }
 
     return address;
   } catch (err) {
