@@ -15,6 +15,7 @@ export interface IOrder {
   paymentMethod: string;
   shippingCourier: string;
   shippingService: string;
+  vouchers?: string[];
   orderItems: IOrderItem[];
 }
 

@@ -16,6 +16,7 @@ import {
   Textarea,
   GridItem,
   SimpleGrid,
+  Switch,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
 import { useAppSelector } from '@/lib/hooks';
@@ -44,6 +45,7 @@ const Page = () => {
     subdistrictId: '',
     subdistrictName: '',
     postalCode: '',
+    isDefault: false,
   });
 
   const router = useRouter();
@@ -244,7 +246,17 @@ const Page = () => {
                     />
                   </FormControl>
                 </SimpleGrid>
-                <Stack spacing={6} direction={['column', 'row']}>
+                <FormControl id="isDefault">
+                  <FormLabel>Is Default Address?</FormLabel>
+                  <Switch
+                    isChecked={formData.isDefault}
+                    onChange={() => setFormData((prevFormData) => ({
+                      ...prevFormData,
+                      isDefault: !prevFormData.isDefault,
+                    }))}
+                  />
+                </FormControl>
+                <Stack spacing={6} direction={['column', 'row']} mt={15}>
                   <Button
                     onClick={() => {
                       router.push('/users/address');

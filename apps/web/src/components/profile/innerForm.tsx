@@ -10,6 +10,7 @@ import {
 import { FormikProps, Form, Field } from 'formik';
 import { FormValues } from './types';
 import AvatarForm from "./AvatarForm";
+import { format } from "date-fns";
 
 export default function InnerForm(props: FormikProps<FormValues>) {
   const { values, errors, touched, handleChange, handleSubmit, isSubmitting } =
@@ -17,7 +18,7 @@ export default function InnerForm(props: FormikProps<FormValues>) {
 
   return (
     <Box>
-      <AvatarForm id={values.id} image={values.image} />
+      <AvatarForm />
       <Form onSubmit={handleSubmit}>
         <Stack spacing={6} w={'full'} rounded={'xl'} p={10} mb={6}>
           <FormControl id="Name">
@@ -144,6 +145,10 @@ export default function InnerForm(props: FormikProps<FormValues>) {
                 {errors.birthDate}
               </Text>
             )}
+          </FormControl>
+          <FormControl id="referralCode">
+            <FormLabel>Referral Code</FormLabel>
+            <Text>{values.referralCode}</Text>
           </FormControl>
           <Stack spacing={6} direction={['column', 'row']} mt={15}>
             <Button

@@ -18,11 +18,13 @@ import {
 } from '@chakra-ui/react';
 import { FormatCurrency } from '@/utils/FormatCurrency';
 import Link from 'next/link';
-import { getAvailableProductsByStoreID, getProducts } from '@/services/product.service';
+import {
+  getAvailableProductsByStoreID,
+  getProducts,
+} from '@/services/product.service';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { getStores } from '@/services/store.service';
 import { FaStore } from 'react-icons/fa';
-import AvailableStores from "./AvailableStores";
 
 const ProductList = () => {
   const [stores, setStores] = useState<any[]>([]);
@@ -56,7 +58,7 @@ const ProductList = () => {
   useEffect(() => {
     (async () => {
       const data = await getStores({});
-      setStores(data?.stores);
+      setStores(data.stores);
     })();
   }, []);
 
@@ -71,12 +73,7 @@ const ProductList = () => {
         Groceries Near You
       </Heading>
       <Divider mb={10} />
-      <Stack
-        pb={10}
-        pt={5}
-        bg={'teal'}
-        bgGradient={'linear(to-r, teal.200, green.500)'}
-      >
+      <Stack pb={10} pt={5}>
         <Grid
           templateColumns={{
             base: 'repeat(1, 1fr)',
@@ -112,14 +109,15 @@ const ProductList = () => {
                   <Link href={`/products/${product.slug}`}>
                     <Image
                       src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/products/${product.productImages[0]?.image}`}
-                      alt="Green double couch with wooden legs"
+                      alt={product.slug}
                       borderRadius="2xl"
                       width={'500px'}
                       height={{ md: '200px', sm: '200px', base: '200px' }}
                       fit={'cover'}
+                      // mb={20}
                     />
                     <Stack mt="3" spacing="3" textAlign={'center'}>
-                      <Heading size={{ md: 'sm', sm: 'md' }}>
+                      <Heading size={{ md: 'sm', sm: 'md', lg: 'md' }}>
                         {product.name}
                       </Heading>
                       <Text display={'block'}>{product.category.name}</Text>
@@ -166,7 +164,30 @@ const ProductList = () => {
           </Box>
         )}
         {data.pages === 0 && (
-          <AvailableStores stores={stores} />
+          <Stack flexDirection={'column'} textAlign={'center'} h={'full'}>
+            <Text as={'b'} fontSize={'4xl'}>
+              Our Products only available in Stores below:{' '}
+            </Text>
+            <Box m={2} justifyContent={'center'} mt={10}>
+              {stores.map((store: any, index: number) => (
+                <Flex
+                  key={index}
+                  display="inline-flex"
+                  backgroundColor={'white'}
+                  cursor={'default'}
+                  m={2}
+                  alignItems="center"
+                  borderRadius={5}
+                  width="max-content"
+                  p={1}
+                  pr={4}
+                >
+                  <Icon as={FaStore} color="green.500" m={2} />
+                  {store.name}
+                </Flex>
+              ))}
+            </Box>
+          </Stack>
         )}
       </Stack>
     </>

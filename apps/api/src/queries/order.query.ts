@@ -7,7 +7,6 @@ import {
 import { getCartByUserIDQuery, resetCartItemsQuery } from './cart.query';
 import {
   getStockByProductIdAndStoreIdQuery,
-  returnOrderStocksQuery,
   updateStockQuery,
 } from './stock.query';
 import { getDiscountsByStoreIDQuery } from './discount.query';
@@ -108,6 +107,9 @@ const createOrderQuery = async (data: IOrder): Promise<Order> => {
   try {
     const trx = await prisma.$transaction(async (prisma) => {
       try {
+        const vouchers = data.vouchers || [];
+        delete data.vouchers;
+
         const order = await prisma.order.create({
           data: {
             ...data,
@@ -138,6 +140,19 @@ const createOrderQuery = async (data: IOrder): Promise<Order> => {
           }
         }
 
+        // update used vouchers status
+        for (const voucherId of vouchers) {
+          await prisma.userVoucher.update({
+            data: {
+              isUsed: true,
+              orderId: order.id,
+            },
+            where: {
+              id: voucherId,
+            }
+          });
+        }
+
         // get discounts
         const discounts = await getDiscountsByStoreIDQuery(data.storeId);
         const storeDiscounts = discounts?.filter((discount) => {
@@ -155,7 +170,7 @@ const createOrderQuery = async (data: IOrder): Promise<Order> => {
             (discount.type === DISCOUNT_TYPE.minimumPurchase &&
               data.totalPrice >= Number(discount.minimumPrice)) ||
             (discount.type === DISCOUNT_TYPE.freeShipping &&
-              totalOrders >= Number(discount.minimumOrders))
+              (totalOrders % Number(discount.minimumOrders) > 0))
           ) {
             await createVoucherQuery({
               userId: data.userId,

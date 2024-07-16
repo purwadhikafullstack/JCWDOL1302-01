@@ -17,11 +17,21 @@ const settings = {
   slidesToScroll: 1,
 };
 
-export default function BannerPromo() {
+export default function Carousel() {
   const [slider, setSlider] = React.useState<Slider | null>(null);
 
-  const top = useBreakpointValue({ base: '90%', sm: '35%', md: 'none' });
-  const side = useBreakpointValue({ base: '30%', sm: '10px', md: 'none' });
+  const top = useBreakpointValue({
+    base: '90%',
+    lg: '50%',
+    md: '50%',
+    sm: '500%',
+  });
+  const side = useBreakpointValue({
+    base: '30%',
+    lg: '10px',
+    md: '20px',
+    sm: '100px',
+  });
 
   const cards = [
     '/assets/images/Diskon.gif',
@@ -38,9 +48,6 @@ export default function BannerPromo() {
       overflow={'hidden'}
       p={{ base: 0, sm: 15 }}
       mb={{ base: 0, sm: 20 }}
-      bgImage={'/assets/images/bgline1.png'}
-      bgSize={{ base: 'unset', sm: 'cover' }}
-      bgPos={{ base: 'left', sm: 'bottom' }}
     >
       <link
         rel="stylesheet"
@@ -52,7 +59,7 @@ export default function BannerPromo() {
         type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
       />
-      <Box display={{ base: 'none', sm: 'block', md: 'none' }}>
+      <Box display={{ base: 'none', sm: 'block', md: 'none', lg: 'block' }}>
         <IconButton
           aria-label="left-arrow"
           colorScheme="messenger"

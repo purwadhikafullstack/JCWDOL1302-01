@@ -21,7 +21,7 @@ import {
   IconButton,
   Icon,
 } from '@chakra-ui/react';
-import { AddIcon } from '@chakra-ui/icons'
+import { AddIcon } from '@chakra-ui/icons';
 import { useRouter } from 'next/navigation';
 import { deleteAddress, getAddresses } from '@/services/address.service';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';

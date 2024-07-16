@@ -76,8 +76,9 @@ const LoginView = ({ callbackUrl, authError }: Props) => {
         justify={'center'}
         bg={useColorModeValue('gray.50', 'gray.800')}
         shadow={'2xl'}
-        bgImage={'/assets/images/bgline.png'}
-        bgSize={{ base: 'cover', sm: 'cover' }}
+        bgImage={'/assets/images/bgline1.png'}
+        bgSize={{ base: 'cover', sm: 'cover', md: 'cover', lg: 'cover' }}
+        bgRepeat={'no-repeat'}
       >
         <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
           <Stack align={'center'}>

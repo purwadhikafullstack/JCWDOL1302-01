@@ -45,18 +45,16 @@ const Category = () => {
         Select from Categories
       </Heading>
       <Divider />
-      <Flex
-        mt={{ base: '5', sm: '2' }}
-        pt={5}
-        pb={{ base: 10, sm: 100 }}
-        bgImage={'/assets/images/bgline1.png'}
-        bgSize={{ base: 'auto', sm: 'cover' }}
-        bgPos={{ base: 'left', sm: 'unset' }}
-      >
+      <Flex mt={{ base: '5', sm: '2' }} pt={5} pb={{ base: 10, sm: 100 }}>
         <Container p={'auto'}>
           <Box justifyContent={'center'}>
             <Grid
-              templateColumns={{ base: 'repeat(3, 1fr)', sm: 'repeat(5, 1fr)' }}
+              templateColumns={{
+                base: 'repeat(3, 1fr)',
+                sm: 'repeat(4, 1fr)',
+                md: 'repeat(5, 1fr)',
+                lg: 'repeat(5, 1fr)',
+              }}
               gap={10}
               textAlign={'center'}
             >

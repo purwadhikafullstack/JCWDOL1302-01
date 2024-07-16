@@ -31,6 +31,7 @@ export default function UserProfileEdit(): JSX.Element {
       phone: props.initialPhone || user.phone || '',
       gender: props.initialGender || user.gender || '',
       birthDate: props.initialBirthDate || user.birthDate || '',
+      referralCode: props.initialReferralCode || user.referralCode || '',
     }),
     validationSchema: UpdateProfileSchema,
     enableReinitialize: true,

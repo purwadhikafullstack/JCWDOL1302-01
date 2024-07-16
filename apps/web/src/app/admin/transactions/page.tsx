@@ -18,28 +18,20 @@ import {
   Flex,
   Input,
   Select,
-  IconButton,
-  Icon,
   useOutsideClick,
-  Popover,
-  PopoverTrigger,
-  InputGroup,
-  InputRightElement,
-  PopoverContent,
-  PopoverBody,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useAppSelector } from '@/lib/hooks';
 import { getOrders } from '@/services/order.service';
 import { FormatCurrency } from '@/utils/FormatCurrency';
 import { formatDate } from '@/utils/date';
-import { endOfMonth, format, startOfMonth } from "date-fns";
-import { DateRange, Range, RangeKeyDict } from "react-date-range";
-import { FaCalendarAlt } from "react-icons/fa";
-import { ORDER_STATUS } from "@/constants/order.constant";
+import { endOfMonth, format, startOfMonth } from 'date-fns';
+import { Range, RangeKeyDict } from 'react-date-range';
+import { ORDER_STATUS } from '@/constants/order.constant';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
+import DatePicker from './DatePicker';
+import TransactionsPagination from './TransactionsPagination';
 
 const Page = () => {
   const router = useRouter();
@@ -99,7 +91,7 @@ const Page = () => {
       </Text>
       <Card my={10}>
         <CardBody>
-          <Flex gap={4} pb={8} direction={{ base: "column", md: "row" }}>
+          <Flex gap={4} pb={8} direction={{ base: 'column', md: 'row' }}>
             <Input
               placeholder="Search..."
               value={filters.keyword}
@@ -115,41 +107,31 @@ const Page = () => {
               }
             >
               <option value="">- All Status -</option>
-              <option value={ORDER_STATUS.menungguPembayaran}>{ORDER_STATUS.menungguPembayaran}</option>
-              <option value={ORDER_STATUS.menungguKonfirmasiPembayaran}>{ORDER_STATUS.menungguKonfirmasiPembayaran}</option>
-              <option value={ORDER_STATUS.diproses}>{ORDER_STATUS.diproses}</option>
-              <option value={ORDER_STATUS.dikirim}>{ORDER_STATUS.dikirim}</option>
-              <option value={ORDER_STATUS.pesananDikonfirmasi}>{ORDER_STATUS.pesananDikonfirmasi}</option>
-              <option value={ORDER_STATUS.dibatalkan}>{ORDER_STATUS.dibatalkan}</option>
+              <option value={ORDER_STATUS.menungguPembayaran}>
+                {ORDER_STATUS.menungguPembayaran}
+              </option>
+              <option value={ORDER_STATUS.menungguKonfirmasiPembayaran}>
+                {ORDER_STATUS.menungguKonfirmasiPembayaran}
+              </option>
+              <option value={ORDER_STATUS.diproses}>
+                {ORDER_STATUS.diproses}
+              </option>
+              <option value={ORDER_STATUS.dikirim}>
+                {ORDER_STATUS.dikirim}
+              </option>
+              <option value={ORDER_STATUS.pesananDikonfirmasi}>
+                {ORDER_STATUS.pesananDikonfirmasi}
+              </option>
+              <option value={ORDER_STATUS.dibatalkan}>
+                {ORDER_STATUS.dibatalkan}
+              </option>
             </Select>
-            <Popover isOpen={showPicker} onClose={() => setShowPicker(false)}>
-              <PopoverTrigger>
-                <InputGroup>
-                  <Input
-                    onClick={() => setShowPicker(true)}
-                    readOnly
-                    value={`${format(range[0].startDate!, 'dd/MM/yyyy')} - ${format(range[0].endDate!, 'dd/MM/yyyy')}`}
-                  />
-                  <InputRightElement>
-                    <IconButton
-                      aria-label="Open date picker"
-                      icon={<FaCalendarAlt />}
-                      onClick={() => setShowPicker(!showPicker)}
-                      variant="ghost"
-                    />
-                  </InputRightElement>
-                </InputGroup>
-              </PopoverTrigger>
-              <PopoverContent>
-                <PopoverBody>
-                  <DateRange
-                    ranges={range}
-                    onChange={handleRangeChange}
-                    moveRangeOnFirstSelection={false}
-                  />
-                </PopoverBody>
-              </PopoverContent>
-            </Popover>
+            <DatePicker
+              range={range}
+              handleRangeChange={handleRangeChange}
+              showPicker={showPicker}
+              setShowPicker={setShowPicker}
+            />
           </Flex>
           <TableContainer>
             <Table variant="striped">
@@ -200,52 +182,11 @@ const Page = () => {
               </Tbody>
             </Table>
           </TableContainer>
-          <Box pt={4} display="flex" justifyContent="space-between">
-            <Select
-              width="auto"
-              value={filters.size}
-              onChange={(e) =>
-                setFilters({
-                  ...filters,
-                  size: parseInt(e.target.value),
-                  page: 1,
-                })
-              }
-            >
-              <option value="5">5 per page</option>
-              <option value="10">10 per page</option>
-              <option value="20">20 per page</option>
-              <option value="50">50 per page</option>
-            </Select>
-
-            <Box display="flex">
-              <IconButton
-                aria-label="left"
-                icon={<Icon as={FiChevronLeft} />}
-                onClick={() =>
-                  setFilters((prevFilters) => ({
-                    ...prevFilters,
-                    page: Math.max(prevFilters.page - 1, 1),
-                  }))
-                }
-                isDisabled={filters.page === 1}
-              />
-              <Box p={2}>
-                {filters.page} / {data.pages}
-              </Box>
-              <IconButton
-                aria-label="right"
-                icon={<Icon as={FiChevronRight} />}
-                onClick={() =>
-                  setFilters((prevFilters) => ({
-                    ...prevFilters,
-                    page: Math.min(prevFilters.page + 1, data.pages),
-                  }))
-                }
-                isDisabled={filters.page === data.pages}
-              />
-            </Box>
-          </Box>
+          <TransactionsPagination
+            data={data}
+            filters={filters}
+            setFilters={setFilters}
+          />
         </CardBody>
       </Card>
     </Box>
