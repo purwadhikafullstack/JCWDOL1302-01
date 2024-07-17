@@ -105,7 +105,7 @@ const ProductCatalog = () => {
           mb={5}
           mt={5}
           value={filters.category}
-          onChange={(e) => setFilters({ ...filters, category: e.target.value })}
+          onChange={(e) => setFilters({ ...filters, category: e.target.value, page: 1 })}
         >
           <option value={''}>All</option>
           {categories.categories?.map((category: any) => (

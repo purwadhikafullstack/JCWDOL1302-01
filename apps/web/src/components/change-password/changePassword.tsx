@@ -13,7 +13,9 @@ import { updatePassword } from '@/services/user.service';
 
 const PasswordSchema = Yup.object().shape({
   currentPassword: Yup.string().required('Current Password is required'),
-  newPassword: Yup.string().required('New Password is required'),
+  newPassword: Yup.string().required('New Password is required')
+  .min(8, 'Password should be 8 chars minimum.')
+  .matches(/[a-zA-Z]/, 'Password can only contain Latin letters.'),
   confirmPassword: Yup.string().required('Confirm Password is required'),
 });
 
