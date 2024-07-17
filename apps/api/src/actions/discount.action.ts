@@ -1,3 +1,4 @@
+import { DISCOUNT_UNIT } from "@/constants/discount.constant";
 import { HttpException } from '@/exceptions/HttpException';
 import {
   IDiscount,
@@ -19,6 +20,10 @@ const createDiscountAction = async (
   discountData: IDiscount,
 ): Promise<Discount> => {
   try {
+    if (discountData.unit === DISCOUNT_UNIT.percentage && discountData.amount > 100) {
+      throw new Error("Amount can not more than 100%");
+    }
+
     const discount = await createDiscountQuery(discountData);
     return discount;
   } catch (err) {
