@@ -26,9 +26,9 @@ const getAddressByIDAction = async (id: string): Promise<UserAddress | null> => 
 
 const createAddressAction = async (addressData: IAddress): Promise<UserAddress> => {
   try {
-    const existAddress = await getAddressByLabelQuery(addressData.label);
+    const existAddress = await getAddressByLabelQuery(addressData.userId, addressData.label);
 
-    if (existAddress) throw new Error("Address label already exists");
+    if (existAddress?.id) throw new Error("Address label already exists");
 
     const address = await createAddressQuery(addressData);
     return address;

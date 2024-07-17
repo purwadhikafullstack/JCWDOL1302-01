@@ -55,7 +55,7 @@ const SelectStores = ({
                 <option
                   key={store.id}
                   value={store.id}
-                >{`${store.name} - ${parseFloat(store.distance).toFixed(2)} km`}</option>
+                >{store.name + `${store.distance ? ' - ' + parseFloat(store.distance).toFixed(2) + ' km' : ''}`}</option>
               ))}
             </Select>
           </FormControl>

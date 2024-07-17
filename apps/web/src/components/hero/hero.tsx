@@ -51,7 +51,7 @@ export default function Hero() {
   return (
     <Box
       position={'relative'}
-      height={{ base: '200px', sm: '700px' }}
+      height={{ base: '200px', sm: '500px', md: '700px', lg: '700px' }}
       width={'full'}
       overflow={'hidden'}
     >

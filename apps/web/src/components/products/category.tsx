@@ -2,6 +2,7 @@
 
 import {
   Box,
+  Center,
   Container,
   Divider,
   Flex,
@@ -48,41 +49,43 @@ const Category = () => {
       <Flex mt={{ base: '5', sm: '2' }} pt={5} pb={{ base: 10, sm: 100 }}>
         <Container p={'auto'}>
           <Box justifyContent={'center'}>
-            <Grid
-              templateColumns={{
-                base: 'repeat(3, 1fr)',
-                sm: 'repeat(4, 1fr)',
-                md: 'repeat(5, 1fr)',
-                lg: 'repeat(5, 1fr)',
-              }}
-              gap={10}
-              textAlign={'center'}
-            >
-              {data.categories?.map((category: any, index: number) => (
-                <GridItem key={index}>
-                  <Link href={`/products?category=${category.slug}`}>
-                    <Image
-                      key={index}
-                      src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/categories/${category.image}`}
-                      transition={'0.25s all ease-in-out'}
-                      _hover={{
-                        transform: 'translateY(-5px)',
-                        boxShadow: 'lg',
-                      }}
-                      objectFit={'cover'}
-                      width={'120px'}
-                      height={'80px'}
-                      borderRadius={'xl'}
-                      alt={category.name}
-                      mb={2}
-                    />
-                    <Text _hover={{ color: 'green' }} as={'cite'}>
-                      {category.name}
-                    </Text>
-                  </Link>
-                </GridItem>
-              ))}
-            </Grid>
+            <Center>
+              <Grid
+                templateColumns={{
+                  base: 'repeat(2, 1fr)',
+                  sm: 'repeat(3, 1fr)',
+                  md: 'repeat(4, 1fr)',
+                  lg: 'repeat(5, 1fr)',
+                }}
+                gap={10}
+                textAlign={'center'}
+              >
+                {data.categories?.map((category: any, index: number) => (
+                  <GridItem key={index}>
+                    <Link href={`/products?category=${category.slug}`}>
+                      <Image
+                        key={index}
+                        src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/categories/${category.image}`}
+                        transition={'0.25s all ease-in-out'}
+                        _hover={{
+                          transform: 'translateY(-5px)',
+                          boxShadow: 'lg',
+                        }}
+                        objectFit={'cover'}
+                        width={'120px'}
+                        height={'80px'}
+                        borderRadius={'xl'}
+                        alt={category.name}
+                        mb={2}
+                      />
+                      <Text _hover={{ color: 'green' }} as={'cite'}>
+                        {category.name}
+                      </Text>
+                    </Link>
+                  </GridItem>
+                ))}
+              </Grid>
+            </Center>
           </Box>
         </Container>
       </Flex>
