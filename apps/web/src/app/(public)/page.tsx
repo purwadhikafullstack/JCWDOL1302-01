@@ -25,19 +25,12 @@ export default function Home() {
   }, []);
   return (
     <>
-      <Center>
-        <Stack
-          bgGradient={'linear(to-b, white, gray.100)'}
-          maxWidth={{ base: '100%', sm: '1280px' }}
-        >
-          <GeoLocation />
-          <Hero />
-          <Category />
-          <Divider />
-          <BannerPromo />
-          <ProductList />
-        </Stack>
-      </Center>
+      <GeoLocation />
+      <Hero />
+      <Category />
+      <Divider />
+      <BannerPromo />
+      <ProductList />
     </>
   );
 }

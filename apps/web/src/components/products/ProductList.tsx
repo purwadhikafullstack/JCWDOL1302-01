@@ -5,6 +5,7 @@ import {
   Box,
   Card,
   CardBody,
+  Center,
   Divider,
   Flex,
   Grid,
@@ -74,63 +75,66 @@ const ProductList = () => {
       </Heading>
       <Divider mb={10} />
       <Stack pb={10} pt={5}>
-        <Grid
-          templateColumns={{
-            base: 'repeat(1, 1fr)',
-            sm: 'repeat(2, 1fr)',
-            md: 'repeat(3, 1fr)',
-            lg: 'repeat(4, 1fr)',
-          }}
-          gap={6}
-        >
-          {data.products?.map((product: any, index: number) => (
-            <GridItem
-              w={'full'}
-              flexDirection={'column'}
-              alignItems={'flex-start'}
-              p={5}
-              key={index}
-              mb={{ md: 10, sm: 0, base: 0 }}
-            >
-              <Card
-                h={{ base: '100%', sm: '100%' }}
-                key={index}
-                maxW="xl"
-                shadow={'xl'}
+        <Center>
+          <Grid
+            templateColumns={{
+              base: 'repeat(1, 1fr)',
+              sm: 'repeat(2, 1fr)',
+              md: 'repeat(3, 1fr)',
+              lg: 'repeat(4, 1fr)',
+            }}
+            gap={6}
+            maxWidth={1200}
+          >
+            {data.products?.map((product: any, index: number) => (
+              <GridItem
                 w={'full'}
-                transition={'0.25s all ease-in-out'}
-                _hover={{
-                  transform: 'translateY(-15px)',
-                  boxShadow: 'lg',
-                }}
-                borderRadius={'2xl'}
+                flexDirection={'column'}
+                alignItems={'flex-start'}
+                p={5}
+                key={index}
+                mb={{ md: 10, sm: 0, base: 0 }}
               >
-                <CardBody>
-                  <Link href={`/products/${product.slug}`}>
-                    <Image
-                      src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/products/${product.productImages[0]?.image}`}
-                      alt={product.slug}
-                      borderRadius="2xl"
-                      width={'500px'}
-                      height={{ md: '200px', sm: '200px', base: '200px' }}
-                      fit={'cover'}
-                      // mb={20}
-                    />
-                    <Stack mt="3" spacing="3" textAlign={'center'}>
-                      <Heading size={{ md: 'sm', sm: 'md', lg: 'md' }}>
-                        {product.name}
-                      </Heading>
-                      <Text display={'block'}>{product.category.name}</Text>
-                      <Text color="blue.600" fontSize="lg" mt={5} as={'b'}>
-                        {FormatCurrency(product.price)}
-                      </Text>
-                    </Stack>
-                  </Link>
-                </CardBody>
-              </Card>
-            </GridItem>
-          ))}
-        </Grid>
+                <Card
+                  h={{ base: '100%', sm: '100%' }}
+                  key={index}
+                  maxW="xl"
+                  shadow={'xl'}
+                  w={'full'}
+                  transition={'0.25s all ease-in-out'}
+                  _hover={{
+                    transform: 'translateY(-15px)',
+                    boxShadow: 'lg',
+                  }}
+                  borderRadius={'2xl'}
+                >
+                  <CardBody>
+                    <Link href={`/products/${product.slug}`}>
+                      <Image
+                        src={`${process.env.NEXT_PUBLIC_BASE_API_URL}/public/products/${product.productImages[0]?.image}`}
+                        alt={product.slug}
+                        borderRadius="2xl"
+                        width={'500px'}
+                        height={{ md: '200px', sm: '200px', base: '200px' }}
+                        fit={'cover'}
+                        // mb={20}
+                      />
+                      <Stack mt="3" spacing="3" textAlign={'center'}>
+                        <Heading size={{ md: 'sm', sm: 'md', lg: 'md' }}>
+                          {product.name}
+                        </Heading>
+                        <Text display={'block'}>{product.category.name}</Text>
+                        <Text color="blue.600" fontSize="lg" mt={5} as={'b'}>
+                          {FormatCurrency(product.price)}
+                        </Text>
+                      </Stack>
+                    </Link>
+                  </CardBody>
+                </Card>
+              </GridItem>
+            ))}
+          </Grid>
+        </Center>
 
         {data.pages > 1 && (
           <Box pt={4} display="flex" justifyContent="center">

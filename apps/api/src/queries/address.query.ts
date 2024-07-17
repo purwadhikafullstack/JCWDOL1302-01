@@ -52,11 +52,12 @@ const getAddressByIDQuery = async (id: string): Promise<UserAddress | null> => {
   }
 }
 
-const getAddressByLabelQuery = async (label: string): Promise<UserAddress | null> => {
+const getAddressByLabelQuery = async (userId: string, label: string): Promise<UserAddress | null> => {
   try {
     const address = await prisma.userAddress.findFirst({
       where: {
-        label
+        userId,
+        label,
       }
     });
 

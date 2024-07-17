@@ -11,10 +11,12 @@ import { FormikProps, Form, Field } from 'formik';
 import { FormValues } from './types';
 import AvatarForm from "./AvatarForm";
 import { format } from "date-fns";
+import { useRouter } from "next/navigation";
 
 export default function InnerForm(props: FormikProps<FormValues>) {
   const { values, errors, touched, handleChange, handleSubmit, isSubmitting } =
     props;
+  const router = useRouter();
 
   return (
     <Box>
@@ -152,6 +154,9 @@ export default function InnerForm(props: FormikProps<FormValues>) {
           </FormControl>
           <Stack spacing={6} direction={['column', 'row']} mt={15}>
             <Button
+              onClick={() => {
+                router.push(`/users`);
+              }}
               bg={'red.400'}
               color={'white'}
               w="full"
