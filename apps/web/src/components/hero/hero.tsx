@@ -99,18 +99,18 @@ export default function Hero() {
       </Box>
       <Slider {...settings} ref={(slider) => setSlider(slider)}>
         {cards.map((card, index) => (
-          <Box
-            key={index}
-            height={{ base: 'xs', sm: 'lg' }}
-            position="relative"
-            backgroundPosition="center"
-            backgroundRepeat="no-repeat"
-            backgroundSize="contain"
-            backgroundImage={`url(${card.image})`}
-            bgPos={'top'}
-          >
-            <Link href={card.link}></Link>
-          </Box>
+          <Link href={card.link} key={index}>
+            <Box
+              key={index}
+              height={{ base: 'xs', sm: 'lg' }}
+              position="relative"
+              backgroundPosition="center"
+              backgroundRepeat="no-repeat"
+              backgroundSize="contain"
+              backgroundImage={`url(${card.image})`}
+              bgPos={'top'}
+            />
+          </Link>
         ))}
       </Slider>
     </Box>
