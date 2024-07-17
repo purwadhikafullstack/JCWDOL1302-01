@@ -85,13 +85,6 @@ const Page = () => {
                 setFilters({ ...filters, keyword: e.target.value, page: 1 })
               }
             />
-            <Input
-              placeholder="Search..."
-              value={filters.keyword}
-              onChange={(e) =>
-                setFilters({ ...filters, keyword: e.target.value, page: 1 })
-              }
-            />
             <Button
               colorScheme="blue"
               onClick={() => {
@@ -169,7 +162,7 @@ const Page = () => {
                         <Button
                           colorScheme="blue"
                           onClick={() => {
-                            router.push(`/admin/stores/discounts`);
+                            router.push(`/admin/discounts/edit/${discount.id}`);
                           }}
                         >
                           Edit

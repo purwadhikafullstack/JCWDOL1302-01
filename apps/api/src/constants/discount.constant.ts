@@ -11,3 +11,11 @@ export const DISCOUNT_TYPE: {
   freeShipping: "Free Shipping",
   referralCode: "Referral Code",
 }
+
+export const DISCOUNT_UNIT: {
+  amount: string;
+  percentage: string;
+} = {
+  amount: "Amount",
+  percentage: "Percentage",
+}
